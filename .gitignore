@@ -1,0 +1,47 @@
+# Credentials and secrets
+.env
+**/.env
+**/credentials.json
+
+# Disposable intermediates
+**/.tmp/
+**/tmp/
+
+# OS files
+.DS_Store
+**/.DS_Store
+
+# Claude Code local state
+.claude/plans/
+
+# MCP config (contains API keys and tokens)
+.mcp.json
+
+# Agent temporary files (screenshots, session data)
+.agent/
+
+# Node dependencies
+**/node_modules/
+
+# Python virtual environments
+**/.venv/
+**/venv/
+
+# OAuth client secrets
+**/client_secret*.json
+
+# Obsidian vault config (machine-specific)
+.obsidian/
+
+# Agent skills (installed via npx skills, symlinked into .claude/skills/)
+.agents/
+
+# Local Claude settings (machine-specific)
+.claude/settings.local.json
+
+# Binary assets (human-only reference, never loaded into Claude context)
+reference/*.png
+reference/*.pdf
+reference/*.docx
+projects/*/reference/screenshots/
+projects/*/reference/*.png

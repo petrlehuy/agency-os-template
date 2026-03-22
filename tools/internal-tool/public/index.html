@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agency Internal Tool</title>
+  <link rel="icon" type="image/jpeg" href="favicon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <aside id="sidebar">
+      <div id="sidebar-header">
+        <div class="workspace-row">
+          <img src="logo.svg" class="workspace-logo-img" alt="[YOUR_AGENCY]"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'workspace-icon-fallback\'>RU</div>')">
+        </div>
+      </div>
+
+      <div id="sidebar-tabs">
+        <button class="tab-btn active" data-tab="files">Files</button>
+        <button class="tab-btn" data-tab="skills">Skills</button>
+      </div>
+
+      <div id="file-tree">
+        <div class="loading">Loading files…</div>
+      </div>
+
+      <div id="skills-panel" class="hidden"></div>
+    </aside>
+
+    <div id="sidebar-resize" title="Drag to resize">
+      <svg class="resize-handle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m6 9-3 3 3 3"/>
+        <path d="m10 9 3 3-3 3"/>
+      </svg>
+    </div>
+
+    <main id="content">
+      <div id="tab-bar"></div>
+
+      <div id="toolbar" class="hidden">
+        <span id="file-path-label"></span>
+        <div id="actions">
+          <button id="btn-edit" class="btn">Edit</button>
+          <button id="btn-save" class="btn btn-primary hidden">Save</button>
+          <button id="btn-cancel" class="btn hidden">Cancel</button>
+          <div class="divider"></div>
+          <button id="btn-newtab" class="btn btn-outline hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:4px"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Open
+          </button>
+          <button id="btn-refresh" class="btn btn-outline" title="Refresh content">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:4px"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>Refresh
+          </button>
+          <button id="btn-pdf" class="btn btn-outline">↓ PDF</button>
+          <button id="btn-docx" class="btn btn-outline">↓ DOCX</button>
+        </div>
+      </div>
+
+      <div id="quick-nav" class="hidden">
+        <div id="quick-nav-search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="qn-search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="quick-nav-input" placeholder="Search files…" autocomplete="off" spellcheck="false">
+        </div>
+        <div id="quick-nav-list"></div>
+      </div>
+
+      <div id="main-area">
+        <div id="empty-state">
+          <svg class="empty-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+          </svg>
+          <p>Select a file from the sidebar</p>
+        </div>
+        <div id="viewer" class="hidden"></div>
+      </div>
+    </main>
+
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

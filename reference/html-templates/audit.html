@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-mailový audit — Demo E-shop</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --accent: #316CF0;
+    --text: #1A1C1F;
+    --bg-light: #F3F5F7;
+    --highlight: #FCF2B5;
+    --green: #2A9D8F;
+    --orange: #f6ad55;
+    --red: #e93d3d;
+    --white: #ffffff;
+    --border: #1A1C1F;
+    --border-subtle: #cbd5e0;
+    --muted: #8893A8;
+    --red-bg: #FFF0F0;
+    --green-bg: #F0FAF8;
+    --orange-bg: #FFF8EE;
+    --blue-bg: #EBF0FF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Manrope', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--white);
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 40px 0;
+    border-top: 4px solid var(--accent);
+  }
+
+  /* ── Inner padding wrapper ── */
+  .doc-inner { padding-top: 44px; padding-bottom: 0; }
+
+  /* ── Header ── */
+  .doc-header { margin-bottom: 44px; padding-bottom: 32px; border-bottom: 2px solid var(--border); }
+  .logo-wrap { margin-bottom: 24px; }
+  .logo-wrap svg { height: 26px; width: auto; display: block; }
+  .doc-label { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .doc-header h1 { font-size: 36px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; margin-bottom: 6px; }
+  .doc-header .subtitle { font-size: 18px; color: var(--muted); font-weight: 500; margin-bottom: 6px; }
+  .doc-header .meta { font-size: 13px; color: var(--muted); }
+
+  /* ── Typography ── */
+  h2 { font-size: 22px; font-weight: 600; color: var(--text); margin-top: 60px; margin-bottom: 20px; line-height: 1.3; }
+  h3 { font-size: 17px; font-weight: 600; color: var(--text); margin-top: 28px; margin-bottom: 12px; }
+  p { margin-bottom: 14px; font-size: 16px; line-height: 1.65; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; }
+
+  /* ── Verdict ── */
+  .verdict { background: var(--blue-bg); border-radius: 15px; padding: 24px 28px; margin: 20px 0 28px; }
+  .verdict .verdict-label { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 10px; }
+  .verdict p { color: var(--text); font-size: 16px; line-height: 1.7; margin-bottom: 0; }
+
+  /* ── KPI Cards ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+  .kpi { background: var(--bg-light); border: none; border-radius: 15px; padding: 16px 18px; }
+  .kpi.pos     { background: var(--green-bg); }
+  .kpi.caution { background: var(--orange-bg); }
+  .kpi.neg     { background: var(--red-bg); }
+  .kpi .kpi-label { font-size: 12px; color: var(--muted); margin-bottom: 5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2px; }
+  .kpi .kpi-value { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 4px; line-height: 1.2; }
+  .kpi .kpi-delta { font-size: 12px; font-weight: 600; color: var(--muted); }
+  .kpi.pos .kpi-delta { color: var(--green); }
+  .kpi.caution .kpi-delta { color: #C07A20; }
+  .kpi.neg .kpi-delta { color: var(--red); }
+
+  /* ── Callout Boxes ── */
+  .callout { border-radius: 15px; padding: 24px 24px 20px; margin: 16px 0; border: none; font-size: 15px; line-height: 1.65; }
+  .callout.green  { background: var(--green-bg); }
+  .callout.red    { background: var(--red-bg); }
+  .callout.orange { background: var(--orange-bg); }
+  .callout.yellow { background: var(--highlight); }
+  .callout.blue   { background: var(--blue-bg); }
+  .callout.dark   { background: var(--bg-light); }
+  /* Header: title centered */
+  .callout-header { text-align: center; margin-bottom: 12px; }
+  /* Title: normal subheadline, centered, per-type color */
+  .callout .callout-title { font-weight: 700; font-size: 14px; color: var(--text); }
+  .callout.green  .callout-title { color: var(--green); }
+  .callout.orange .callout-title { color: #C07A20; }
+  .callout.yellow .callout-title { color: #8B7A1A; }
+  .callout.blue   .callout-title { color: var(--accent); }
+  .callout.dark   .callout-title { color: var(--muted); }
+  .callout.red    .callout-title { color: var(--red); }
+  .callout ul { padding-left: 18px; }
+  .callout li { margin-bottom: 6px; }
+  .callout p { font-size: 15px; line-height: 1.65; margin-bottom: 6px; }
+
+  /* ── Data Tables ── */
+  .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; border: 2px solid var(--border); border-radius: 15px; overflow: hidden; }
+  .data-table th { background: var(--text); color: var(--white); padding: 10px 14px; text-align: left; font-weight: 600; font-size: 13px; }
+  .data-table th:not(:first-child) { text-align: center; }
+  .data-table td { padding: 9px 14px; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; white-space: nowrap; }
+  .data-table td:not(:first-child) { text-align: center; }
+  .data-table td.text-left { text-align: left; white-space: normal; }
+  .data-table tr:nth-child(even) td { background: var(--bg-light); }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* ── Lever Cards (Focus Items) ── */
+  .lever { background: var(--bg-light); border: none; border-radius: 15px; padding: 22px 24px; margin: 16px 0; }
+  .lever-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .lever-num { background: var(--accent); color: var(--white); border-radius: 6px; padding: 4px 12px; font-size: 18px; font-weight: 600; display: inline-block; line-height: 1.3; flex-shrink: 0; }
+  .lever-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  .lever-body { font-size: 15px; line-height: 1.7; margin-bottom: 14px; color: var(--text); }
+  .lever-goal { font-size: 14px; font-weight: 700; color: var(--accent); }
+
+  /* ── Status Badges ── */
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+  .badge.good { background: var(--green-bg); color: var(--green); border: none; }
+  .badge.warn { background: var(--orange-bg); color: #C07A20; border: none; }
+  .badge.bad  { background: var(--red-bg); color: var(--red); border: none; }
+
+  /* ── Charts ── */
+  .chart-wrap { background: var(--bg-light); border: none; border-radius: 15px; padding: 20px 24px; margin: 20px 0; }
+  .chart-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .chart-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .charts-row .chart-wrap { margin: 0; }
+
+  /* ── Utility ── */
+  .note { font-size: 13px; color: var(--muted); font-style: italic; margin-top: 6px; }
+  .spacer { height: 32px; }
+
+  /* ── Footer ── */
+  .doc-footer {
+    background: var(--text);
+    margin: 56px -40px 0;
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .doc-footer .footer-logo svg { height: 20px; width: auto; display: block; }
+  .doc-footer .footer-meta { font-size: 13px; color: var(--muted); }
+
+  /* ── Print ── */
+  @media print {
+    body { padding: 0 20px; max-width: 100%; font-size: 13px; border-top: none; }
+    .doc-inner { padding-top: 20px; }
+    .callout, .lever, .kpi-grid, .chart-wrap, .data-table { break-inside: avoid; }
+    h2 { break-after: avoid; }
+    .verdict { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .kpi.pos, .kpi.caution, .kpi.neg { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    canvas { max-height: 200px; }
+    .doc-footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 40px -20px 0; padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="doc-inner">
+
+<!-- ── HEADER ── -->
+<div class="doc-header">
+  <div class="logo-wrap">
+    <svg width="808" height="146" viewBox="0 0 808 146" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M445.677 30.3621V15.5384H461.611V30.3621H445.677ZM445.677 113.804V41.3624H461.611V113.804H445.677Z" fill="black"/>
+      <path d="M512.951 115.816C505.811 115.816 499.574 114.184 494.241 110.92C488.908 107.655 484.765 103.161 481.812 97.4374C478.903 91.6689 477.448 85.0508 477.448 77.5831C477.448 69.9812 478.947 63.3184 481.944 57.5947C484.941 51.8709 489.106 47.3992 494.439 44.1796C499.773 40.96 505.943 39.3502 512.951 39.3502C520.136 39.3502 526.394 40.9823 531.728 44.2467C537.061 47.511 541.204 52.0274 544.157 57.7959C547.11 63.5197 548.587 70.1154 548.587 77.5831C548.587 85.0956 547.088 91.736 544.091 97.5045C541.138 103.228 536.995 107.722 531.662 110.987C526.328 114.206 520.092 115.816 512.951 115.816ZM512.951 100.657C519.298 100.657 524.014 98.5106 527.1 94.2178C530.185 89.925 531.728 84.3801 531.728 77.5831C531.728 70.5626 530.163 64.973 527.034 60.8143C523.904 56.6109 519.21 54.5092 512.951 54.5092C508.676 54.5092 505.15 55.493 502.373 57.4605C499.64 59.3833 497.613 62.0887 496.291 65.5766C494.968 69.0198 494.307 73.022 494.307 77.5831C494.307 84.6037 495.872 90.2157 499.001 94.419C502.175 98.5777 506.825 100.657 512.951 100.657Z" fill="black"/>
+      <path d="M684.271 115.816C676.69 115.816 670.012 114.251 664.238 111.121C658.509 107.991 654.013 103.586 650.751 97.907C647.534 92.2279 645.925 85.5651 645.925 77.9185V34.0893L662.057 26.9188V77.5161C662.057 81.1381 662.652 84.3801 663.842 87.242C665.076 90.1039 666.729 92.5409 668.8 94.5532C670.872 96.5207 673.252 98.0187 675.941 99.0472C678.629 100.076 681.406 100.59 684.271 100.59C687.224 100.59 690.023 100.076 692.667 99.0472C695.356 97.974 697.736 96.4537 699.808 94.4861C701.879 92.4739 703.51 90.0368 704.7 87.1749C705.89 84.313 706.485 81.0934 706.485 77.5161V7.17051L722.617 0V77.9185C722.617 85.5651 720.986 92.2279 717.725 97.907C714.507 103.586 710.011 107.991 704.237 111.121C698.508 114.251 691.852 115.816 684.271 115.816Z" fill="#316CF0"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M757.886 110.785C762.602 114.139 768.442 115.816 775.406 115.816C781.973 115.816 787.703 114.139 792.596 110.785C797.488 107.432 801.278 102.871 803.967 97.1021C806.656 91.3336 808 84.8273 808 77.5831C808 70.2495 806.634 63.7209 803.901 57.9971C801.168 52.2286 797.312 47.6899 792.331 44.3808C787.395 41.0271 781.555 39.3502 774.811 39.3502C768.023 39.3502 762.315 41.0271 757.687 44.3808C756.761 45.0497 755.879 45.7688 755.043 46.5381V41.3624H740.961V146H757.026V110.151C757.308 110.367 757.595 110.579 757.886 110.785ZM783.207 98.1753C780.519 100.277 777.103 101.328 772.96 101.328C768.684 101.328 765.224 100.344 762.58 98.3765C759.979 96.3642 758.062 93.5694 756.828 89.9921C755.638 86.4147 755.043 82.2784 755.043 77.5831C755.043 72.8431 755.638 68.7068 756.828 65.1742C758.062 61.5968 759.957 58.8244 762.514 56.8568C765.07 54.8446 768.376 53.8384 772.431 53.8384C776.706 53.8384 780.232 54.9117 783.009 57.0581C785.786 59.1598 787.835 62.0216 789.158 65.6437C790.48 69.2211 791.141 73.2009 791.141 77.5831C791.141 82.0101 790.48 86.0346 789.158 89.6567C787.879 93.234 785.896 96.0736 783.207 98.1753Z" fill="#316CF0"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M612.541 78.9246V113.804H628.672V73.3574C628.672 71.6134 628.518 69.3552 628.21 66.5828C627.945 63.7656 627.328 60.7919 626.358 57.6617C625.389 54.5316 623.89 51.5802 621.863 48.8078C619.835 46.0353 617.102 43.7548 613.664 41.9661C610.227 40.1774 605.863 39.2831 600.574 39.2831C593.874 39.2831 588.233 40.7811 583.649 43.7771C581.195 45.3567 579.058 47.2309 577.236 49.3996V41.3624H563.021V113.804H579.153V76.577C579.153 72.15 579.638 68.528 580.607 65.7108C581.577 62.8489 582.855 60.6131 584.442 59.0032C586.073 57.3487 587.88 56.1861 589.863 55.5153C591.847 54.8446 593.852 54.5092 595.88 54.5092C599.67 54.5092 602.667 55.3365 604.871 56.991C607.119 58.6455 608.794 60.7696 609.896 63.3631C611.042 65.912 611.769 68.5727 612.078 71.3451C612.386 74.1176 612.541 76.6441 612.541 78.9246Z" fill="black"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M415.117 114.944C419.657 115.078 424.285 114.698 429.001 113.804V100.255C424.549 100.925 420.583 101.104 417.101 100.791C413.619 100.478 411.084 98.9802 409.497 96.2971C408.66 94.9109 408.197 93.1222 408.109 90.9311C408.065 88.74 408.043 86.1911 408.043 83.2845V54.0397H429.001V41.3624H408.043V21.2398H392.176V41.3624H379.217V54.0397H392.176V84.2236C392.176 88.3375 392.22 92.0267 392.308 95.291C392.396 98.5553 393.255 101.753 394.886 104.883C396.737 108.326 399.448 110.852 403.018 112.462C406.588 114.027 410.621 114.855 415.117 114.944Z" fill="black"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M353.767 78.9246V113.804H369.898V73.3574C369.898 71.6134 369.744 69.3552 369.436 66.5828C369.171 63.7656 368.554 60.7919 367.584 57.6617C366.615 54.5316 365.116 51.5802 363.089 48.8078C361.061 46.0353 358.328 43.7548 354.89 41.9661C351.453 40.1774 347.089 39.2831 341.8 39.2831C335.1 39.2831 329.459 40.7811 324.875 43.7771C322.421 45.3567 320.284 47.2309 318.462 49.3996V41.3624H304.247V113.804H320.379V76.577C320.379 72.15 320.864 68.528 321.834 65.7108C322.803 62.8489 324.081 60.6131 325.668 59.0032C327.299 57.3487 329.106 56.1861 331.089 55.5153C333.073 54.8446 335.078 54.5092 337.106 54.5092C340.896 54.5092 343.894 55.3365 346.097 56.991C348.345 58.6455 350.02 60.7696 351.122 63.3631C352.268 65.912 352.995 68.5727 353.304 71.3451C353.612 74.1176 353.767 76.6441 353.767 78.9246Z" fill="black"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M201.151 114.944C205.691 115.078 210.319 114.698 215.035 113.804V100.255C210.583 100.925 206.616 101.104 203.134 100.791C199.652 100.478 197.118 98.9802 195.531 96.2971C194.694 94.9109 194.231 93.1222 194.143 90.9311C194.099 88.74 194.077 86.1911 194.077 83.2845V54.0397H215.035V41.3624H194.077V21.2398H178.209V41.3624H165.251V54.0397H178.209V84.2236C178.209 88.3375 178.253 92.0267 178.342 95.291C178.43 98.5553 179.289 101.753 180.92 104.883C182.771 108.326 185.482 110.852 189.052 112.462C192.622 114.027 196.655 114.855 201.151 114.944Z" fill="black"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M259.235 115.816C252.007 115.816 245.66 114.229 240.194 111.054C234.729 107.879 230.453 103.474 227.368 97.8399C224.327 92.2056 222.806 85.7216 222.806 78.388C222.806 70.4731 224.305 63.6091 227.302 57.7959C230.299 51.938 234.464 47.3992 239.798 44.1796C245.131 40.96 251.301 39.3502 258.309 39.3502C265.714 39.3502 271.995 41.1165 277.152 44.6491C282.353 48.137 286.21 53.0783 288.722 59.4728C291.234 65.8673 292.182 73.4021 291.565 82.0772H283.763H275.764H239.885C240.42 87.2786 241.933 91.4597 244.425 94.6203C247.599 98.6448 252.227 100.657 258.309 100.657C262.232 100.657 265.604 99.7851 268.425 98.0411C271.29 96.2524 273.494 93.6812 275.036 90.3274L290.771 95.1569C288.039 101.686 283.807 106.761 278.077 110.383C272.392 114.005 266.111 115.816 259.235 115.816ZM258.971 53.5031C264.745 53.5031 268.976 55.3141 271.664 58.9362C273.574 61.5089 274.817 65.1534 275.392 69.8695H240.274C241.003 65.6866 242.387 62.2882 244.425 59.674C247.599 55.56 252.447 53.5031 258.971 53.5031Z" fill="black"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M126.103 115.816C118.875 115.816 112.528 114.229 107.062 111.054C101.597 107.879 97.3217 103.474 94.2364 97.8399C91.1952 92.2056 89.6745 85.7216 89.6745 78.388C89.6745 70.4731 91.1731 63.6091 94.1703 57.7959C97.1675 51.938 101.333 47.3992 106.666 44.1796C111.999 40.96 118.17 39.3502 125.178 39.3502C132.582 39.3502 138.863 41.1165 144.02 44.6491C149.221 48.137 153.078 53.0783 155.59 59.4728C158.102 65.8673 159.05 73.4021 158.433 82.0772H150.632H142.632H106.753C107.288 87.2786 108.802 91.4597 111.294 94.6203C114.467 98.6448 119.095 100.657 125.178 100.657C129.1 100.657 132.472 99.7851 135.293 98.0411C138.158 96.2524 140.362 93.6812 141.905 90.3274L157.64 95.1569C154.907 101.686 150.676 106.761 144.946 110.383C139.26 114.005 132.979 115.816 126.103 115.816ZM125.839 53.5031C131.613 53.5031 135.844 55.3141 138.533 58.9362C140.442 61.5089 141.685 65.1534 142.261 69.8695H107.142C107.871 65.6866 109.255 62.2882 111.294 59.674C114.467 55.56 119.316 53.5031 125.839 53.5031Z" fill="black"/>
+      <path d="M-0.000171958 17.2153L45.6882 17.2153C46.6137 17.2153 47.8038 17.26 49.2583 17.3494C50.7128 17.3942 52.0571 17.5283 53.2912 17.7519C58.8007 18.6015 63.3406 20.4573 66.9107 23.3192C70.5249 26.181 73.1915 29.8031 74.9105 34.1854C76.6735 38.5229 77.5551 43.3523 77.5551 48.6736C77.5551 56.5438 75.5937 63.3184 71.6709 68.9975C69.1456 72.6246 65.7526 75.3622 61.4921 77.2103L79.0757 113.804H61.0266L44.9097 80.0649H22.2838V113.804H6.35038V64.973H22.2838H45.027C45.9085 64.973 46.9002 64.9282 48.0021 64.8388C49.104 64.7494 50.1178 64.5705 51.0434 64.3022C53.6879 63.6315 55.7595 62.4464 57.2581 60.7472C58.8007 59.048 59.8806 57.1251 60.4977 54.9787C61.1588 52.8323 61.4894 50.7306 61.4894 48.6736C61.4894 46.6167 61.1588 44.515 60.4977 42.3686C59.8806 40.1774 58.8007 38.2322 57.2581 36.533C55.7595 34.8338 53.6879 33.6488 51.0434 32.978C50.1178 32.7097 49.104 32.5532 48.0021 32.5085C46.9002 32.419 45.9085 32.3743 45.027 32.3743H22.2838H6.35038L-0.000171958 17.2153Z" fill="black"/>
+    </svg>
+  </div>
+  <div class="doc-label">E-mailový audit</div>
+  <h1>Demo E-shop — Funkční kosmetika</h1>
+  <div class="meta">Období: 1. 2. 2026 – 28. 2. 2026 &nbsp;|&nbsp; Srovnání: předchozí měsíc (leden 2026) &nbsp;|&nbsp; Zdroj: Hiro Analytics &nbsp;|&nbsp; Balíček: Growth</div>
+</div>
+
+
+<!-- ── 1. EXECUTIVE SUMMARY ── -->
+<h2>1. Executive Summary</h2>
+
+<div class="verdict">
+  <div class="verdict-label">Solidní základ, kampaně rostou, soustředíme se na optimalizaci</div>
+  <p>Kampaně jsou nejsilnější část — RPR se zdvojnásobilo na 1,92 Kč a revenue vzrostlo o 38,5 %. Všech 13 flows běží a infrastruktura je kompletní. Click rate postupně roste (0,40 % vs. 0,30 % minulý měsíc, +33 %) a na jeho dalším zlepšení pracujeme. Flow revenue kleslo očekávaně kvůli sezónnímu útlumu a vypnutí popupu během promo akce.</p>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi pos"><div class="kpi-label">Email attributed revenue</div><div class="kpi-value">617 025 Kč</div><div class="kpi-delta">22,7 % z celkového obratu</div></div>
+  <div class="kpi pos"><div class="kpi-label">Campaign RPR</div><div class="kpi-value">1,92 Kč</div><div class="kpi-delta">+128 % vs. předchozí měsíc</div></div>
+  <div class="kpi pos"><div class="kpi-label">Click rate (trend)</div><div class="kpi-value">0,40 %</div><div class="kpi-delta">+33 % vs. 0,30 % minulý měsíc</div></div>
+</div>
+<div class="kpi-grid">
+  <div class="kpi pos"><div class="kpi-label">Campaign revenue</div><div class="kpi-value">224 758 Kč</div><div class="kpi-delta">+38,5 % vs. předchozí měsíc</div></div>
+  <div class="kpi caution"><div class="kpi-label">Flow revenue</div><div class="kpi-value">392 267 Kč</div><div class="kpi-delta">-52,1 % (popup vypnut, viz sekce 4)</div></div>
+  <div class="kpi pos"><div class="kpi-label">Engaged (90D)</div><div class="kpi-value">18 200</div><div class="kpi-delta">+12 % vs. předchozí měsíc</div></div>
+</div>
+
+
+<!-- ── 2. REVENUE & ATTRIBUTION ── -->
+<h2>2. Revenue & Attribution</h2>
+
+<table class="data-table">
+  <thead><tr><th>Metrika</th><th>Aktuální období</th><th>Předchozí období</th><th>Změna</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Email attributed revenue</strong></td><td>617 025 Kč</td><td>980 874 Kč</td><td style="color:#e93d3d;font-weight:600">-37,1 %</td></tr>
+    <tr><td><strong>Total store revenue</strong></td><td>2 713 213 Kč</td><td>2 479 619 Kč</td><td style="color:#2A9D8F;font-weight:600">+9,4 %</td></tr>
+    <tr><td><strong>Email % of total</strong></td><td>22,7 %</td><td>39,6 %</td><td style="color:#e93d3d;font-weight:600">-42,5 %</td></tr>
+    <tr><td><strong>Campaign revenue</strong></td><td>224 758 Kč</td><td>162 332 Kč</td><td style="color:#2A9D8F;font-weight:600">+38,5 %</td></tr>
+    <tr><td><strong>Flow revenue</strong></td><td>392 267 Kč</td><td>818 542 Kč</td><td style="color:#e93d3d;font-weight:600">-52,1 %</td></tr>
+    <tr><td><strong>Split: flows / kampaně</strong></td><td>64 % / 36 %</td><td>83 % / 17 %</td><td>Větší váha kampaní</td></tr>
+  </tbody>
+</table>
+
+<div class="callout orange">
+  <div class="callout-header">
+    <span class="callout-title">Kontext: proč email revenue kleslo a co to znamená</span>
+  </div>
+  <ul>
+    <li>Celkový email revenue klesl o 37 % — ale <strong>store revenue vzrostl o 9,4 %</strong>. Byznys roste.</li>
+    <li>Pokles je primárně z flow revenue (-52 %). Důvod: během promo akce v lednu byl hlavní popup vypnut → méně nových subscriberů → nižší Welcome Flow revenue. Toto je očekávané chování (viz sekce 4).</li>
+    <li>Kampaně naopak rostou (+38,5 %). Revenue split se posouvá směrem k vyrovnanějšímu rozložení — to je pozitivní vývoj.</li>
+  </ul>
+</div>
+
+
+<!-- ── 3. DELIVERABILITY ── -->
+<h2>3. Doručitelnost & Sending</h2>
+
+<table class="data-table">
+  <thead><tr><th>Metrika</th><th>Aktuální</th><th>Předchozí</th><th>Benchmark</th><th>Hodnocení</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Recipients (kampaně)</strong></td><td>116 965</td><td>192 638</td><td>—</td><td><span class="badge warn">-39,3 %</span></td></tr>
+    <tr><td><strong>Open rate (kampaně)</strong></td><td>29,18 %</td><td>27,36 %</td><td>35-45 %</td><td><span class="badge warn">Ke zlepšení</span></td></tr>
+    <tr><td><strong>Click rate (trend)</strong></td><td>0,40 %</td><td>0,30 %</td><td>Vlastní trend: +33 %</td><td><span class="badge good">Roste</span></td></tr>
+    <tr><td><strong>Unsubscribe rate</strong></td><td>0,279 %</td><td>0,32 %</td><td>&lt; 0,3 %</td><td><span class="badge good">OK</span></td></tr>
+    <tr><td><strong>Bounce rate</strong></td><td>0,075 %</td><td>0,094 %</td><td>&lt; 0,4 %</td><td><span class="badge good">OK</span></td></tr>
+  </tbody>
+</table>
+
+<div class="callout yellow">
+  <div class="callout-header">
+    <span class="callout-title">Analýza doručitelnosti</span>
+  </div>
+  <ul>
+    <li><strong>Recipients klesly o 39 %</strong> (117k vs. 193k), ale <strong>open rate vzrostl</strong> (29 % vs. 27 %). To ukazuje na zpřísnění segmentace — posíláme menšímu, ale aktivnějšímu publiku. Doručitelnost jako taková je v pořádku.</li>
+    <li><strong>Click rate roste</strong> — 0,40 % vs. 0,30 % minulý měsíc (+33 %). Směr je správný, na dalším zlepšení aktivně pracujeme optimalizací CTA a obsahu.</li>
+    <li>Unsubscribe a bounce rate jsou v normě — žádné varovné signály.</li>
+  </ul>
+</div>
+
+
+<!-- ── 4. FLOWS ── -->
+<h2>4. Automatizace (Flows)</h2>
+
+<p>Všech 13 flows je live a generuje revenue. Celkový flow revenue: 392 267 Kč/měsíc.</p>
+
+<table class="data-table">
+  <thead><tr><th>#</th><th>Flow</th><th>Revenue (30D)</th><th>Deliveries</th><th>RPR</th><th>Příležitost</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><strong>Welcome Flow (10% sleva)</strong></td><td>249 313 Kč</td><td>3 322</td><td>75,05 Kč</td><td><span class="badge good">Silný RPR</span></td></tr>
+    <tr><td>2</td><td>Welcome Flow (re-subscribe)</td><td>50 077 Kč</td><td>191</td><td>262,18 Kč</td><td><span class="badge good">Vysoký RPR</span></td></tr>
+    <tr><td>3</td><td>Abandoned Checkout</td><td>26 053 Kč</td><td>1 079</td><td>24,15 Kč</td><td><span class="badge warn">Zvýšit objem</span></td></tr>
+    <tr><td>4</td><td>Abandoned Product</td><td>14 165 Kč</td><td>1 684</td><td>8,41 Kč</td><td><span class="badge warn">Zvýšit objem</span></td></tr>
+    <tr><td>5</td><td>Customer Thank You</td><td>14 017 Kč</td><td>1 966</td><td>7,13 Kč</td><td><span class="badge good">OK</span></td></tr>
+    <tr><td>6</td><td>Customer Winback</td><td>10 647 Kč</td><td>2 525</td><td>4,22 Kč</td><td><span class="badge good">OK</span></td></tr>
+    <tr><td>7</td><td>Review Request</td><td>10 465 Kč</td><td>5 014</td><td>2,09 Kč</td><td><span class="badge good">Vysoký objem</span></td></tr>
+    <tr><td>8</td><td>Replenishment Reminder</td><td>6 476 Kč</td><td>2 436</td><td>2,66 Kč</td><td><span class="badge warn">Optimalizovat timing</span></td></tr>
+  </tbody>
+</table>
+<p class="note">RPR = revenue per recipient. Čím vyšší, tím lépe. "Zvýšit objem" = RPR je dobrý, ale malý počet doručení omezuje celkový revenue.</p>
+
+<div class="callout blue">
+  <div class="callout-header">
+    <span class="callout-title">Příležitost: více triggerů = více revenue</span>
+  </div>
+  <ul>
+    <li><strong>Abandoned Checkout</strong> má RPR 24,15 Kč, ale jen 1 079 doručení. Kdyby se počet doručení zdvojnásobil (lepším taggováním a identifikací návštěvníků), revenue by se přibližně zdvojnásobil na ~52 000 Kč.</li>
+    <li><strong>Abandoned Product</strong> — stejný princip: RPR 8,41 Kč × více triggerů = výrazně vyšší revenue.</li>
+    <li>Klíč není optimalizovat emaily v těchto flows (už fungují dobře), ale zajistit, že se triggery spouští častěji — lepší tracking, více identifikovaných návštěvníků.</li>
+  </ul>
+</div>
+
+<div class="callout orange">
+  <div class="callout-header">
+    <span class="callout-title">Welcome Flow pokles: proč a co to znamená</span>
+  </div>
+  <ul>
+    <li>Welcome Flow revenue kleslo o 56 % — ale <strong>to je očekávané</strong>. Během lednových promo akcí byl hlavní popup vypnut, aby nedocházelo ke kolizi slev.</li>
+    <li>Popup submit rate kleslo z 8,5 % na 3,2 % v dotčeném období → méně nových subscriberů → nižší Welcome Flow revenue.</li>
+    <li>Toto se děje u každého klienta při celosajtových promocích. Popup je nyní zpět live a čísla se vrací.</li>
+  </ul>
+</div>
+
+<div class="charts-row">
+  <div class="chart-wrap">
+    <div class="chart-title">Aktuální rozložení flow revenue</div>
+    <div class="chart-sub">Welcome Flow = 64 % — vyšší než ideální, ale díky sezónnímu efektu</div>
+    <canvas id="chartFlowSplit" height="230"></canvas>
+  </div>
+  <div class="chart-wrap">
+    <div class="chart-title">Cílové rozložení</div>
+    <div class="chart-sub">Postupně diverzifikujeme směrem k tomuto rozložení</div>
+    <canvas id="chartFlowTarget" height="230"></canvas>
+  </div>
+</div>
+
+
+<!-- ── 5. CAMPAIGNS ── -->
+<h2>5. Kampaně</h2>
+
+<table class="data-table">
+  <thead><tr><th>Metrika</th><th>Aktuální</th><th>Předchozí</th><th>Změna</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Kampaní odesláno</strong></td><td>11</td><td>13</td><td>-2</td></tr>
+    <tr><td><strong>Deliveries</strong></td><td>116 965</td><td>192 638</td><td style="color:#e93d3d;font-weight:600">-39,3 %</td></tr>
+    <tr><td><strong>Revenue</strong></td><td>224 758 Kč</td><td>162 332 Kč</td><td style="color:#2A9D8F;font-weight:600">+38,5 %</td></tr>
+    <tr><td><strong>RPR</strong></td><td>1,92 Kč</td><td>0,84 Kč</td><td style="color:#2A9D8F;font-weight:600">+128,0 %</td></tr>
+  </tbody>
+</table>
+
+<h3>Přehled jednotlivých kampaní</h3>
+
+<table class="data-table">
+  <thead><tr><th>Datum</th><th style="text-align:left">Předmět</th><th>Deliveries</th><th>OR</th><th>CR</th><th>Revenue</th></tr></thead>
+  <tbody>
+    <tr><td>3. 2.</td><td class="text-left">Zimní rituál pro vaši pleť</td><td>10 542</td><td>32,4 %</td><td>0,82 %</td><td style="color:#2A9D8F;font-weight:600">42 180 Kč</td></tr>
+    <tr><td>6. 2.</td><td class="text-left">3 produkty které vám změní rutinu</td><td>10 890</td><td>28,1 %</td><td>0,55 %</td><td>18 920 Kč</td></tr>
+    <tr><td>10. 2.</td><td class="text-left">Valentýnský výběr pro ni</td><td>11 230</td><td>35,2 %</td><td>0,91 %</td><td style="color:#2A9D8F;font-weight:600">38 450 Kč</td></tr>
+    <tr><td>13. 2.</td><td class="text-left">Poslední šance: Valentýn -14%</td><td>10 670</td><td>31,8 %</td><td>0,78 %</td><td style="color:#2A9D8F;font-weight:600">35 220 Kč</td></tr>
+    <tr><td>17. 2.</td><td class="text-left">Co dělat když vám suší pleť</td><td>10 450</td><td>27,5 %</td><td>0,25 %</td><td style="color:#e93d3d;font-weight:600">5 430 Kč</td></tr>
+    <tr><td>20. 2.</td><td class="text-left">Novinka: Hydra Serum konečně skladem</td><td>11 100</td><td>33,6 %</td><td>0,72 %</td><td style="color:#2A9D8F;font-weight:600">28 750 Kč</td></tr>
+    <tr><td>24. 2.</td><td class="text-left">Proč je retinol tak populární?</td><td>10 200</td><td>26,3 %</td><td>0,18 %</td><td style="color:#e93d3d;font-weight:600">3 890 Kč</td></tr>
+    <tr><td>27. 2.</td><td class="text-left">Poslední dny: zimní kolekce končí</td><td>10 880</td><td>30,1 %</td><td>0,65 %</td><td>22 340 Kč</td></tr>
+  </tbody>
+</table>
+<p class="note">Zobrazeno 8 z 11 kampaní. OR = open rate, CR = click rate.</p>
+
+<div class="callout green">
+  <div class="callout-header">
+    <span class="callout-title">Co funguje a co ne</span>
+  </div>
+  <ul>
+    <li><strong>Top performers:</strong> Kampaně s konkrétní nabídkou nebo produktem (Valentýn, Hydra Serum, Zimní rituál) mají konzistentně vyšší CR a revenue. Lidé reagujou na jasný důvod ke kliknutí.</li>
+    <li><strong>Slabší kampaně:</strong> Čistě edukační emaily (Retinol, Suchá pleť) mají nízký CR (0,18-0,25 %). Obsah je zajímavý, ale chybí jasné CTA a důvod k akci.</li>
+    <li><strong>Takeaway:</strong> Edukační kampaně fungujou pro OR (lidé je otvírají), ale potřebují silnější CTA — například "Zjistěte, který retinol je pro vás" místo obecného článku.</li>
+  </ul>
+</div>
+
+
+<!-- ── 6. RŮST DATABÁZE ── -->
+<h2>6. Růst databáze</h2>
+
+<div class="kpi-grid">
+  <div class="kpi pos"><div class="kpi-label">Newsletter popup</div><div class="kpi-value">8,05 %</div><div class="kpi-delta">Konverze (benchmark 5-8 %)</div></div>
+  <div class="kpi pos"><div class="kpi-label">Celková databáze</div><div class="kpi-value">34 000</div><div class="kpi-delta">+4 510 měsíčně (+15 %)</div></div>
+  <div class="kpi pos"><div class="kpi-label">Engaged (90D)</div><div class="kpi-value">18 200</div><div class="kpi-delta">+1 820 měsíčně (+12 %)</div></div>
+</div>
+
+<table class="data-table">
+  <thead><tr><th>Metrika</th><th>Aktuální</th><th>Předchozí</th><th>Změna</th></tr></thead>
+  <tbody>
+    <tr><td><strong>[YOUR_AGENCY] Popup</strong></td><td colspan="2">13 745 zobrazení → 1 107 odeslání</td><td style="color:#2A9D8F;font-weight:600">8,05 % submit rate</td></tr>
+    <tr><td><strong>Celková databáze</strong></td><td>34 000</td><td>29 490</td><td style="color:#2A9D8F;font-weight:600">+15,3 %</td></tr>
+    <tr><td><strong>Engaged segment (90D)</strong></td><td>18 200</td><td>16 380</td><td style="color:#2A9D8F;font-weight:600">+11,1 %</td></tr>
+    <tr><td><strong>Poměr engaged / celkem</strong></td><td>53,5 %</td><td>55,5 %</td><td style="color:#C07A20;font-weight:600">-2 p.b.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout yellow">
+  <div class="callout-header">
+    <span class="callout-title">Databáze roste zdravě, ale sledujeme poměr</span>
+  </div>
+  <ul>
+    <li>Hlavní popup (8,05 %) konvertuje v benchmarku — tohle funguje skvěle.</li>
+    <li>Celková databáze roste rychleji (+15 %) než engaged segment (+11 %). Poměr engaged/celkem mírně klesl z 55,5 % na 53,5 %. Zatím to není problém, ale sledujeme — nechceme, aby databáze rostla, ale aktivní odběratelé stagnovali.</li>
+    <li>Odhlášení klesly o 27 % — další pozitivní signál.</li>
+  </ul>
+</div>
+
+
+<!-- ── 7. FOCUS PRO PŘÍŠTÍ MĚSÍC ── -->
+<h2>7. Focus pro příští měsíc</h2>
+
+<p>Tři věci, na které se soustředíme v březnu:</p>
+
+<div class="lever">
+  <div class="lever-header"><span class="lever-num">1</span><span class="lever-title">Zlepšit click rate v kampaních</span></div>
+  <div class="lever-body">Click rate roste (+33 % MoM), ale chceme pokračovat v trendu. CTA audit posledních kampaní ukazuje, že edukační emaily mají slabší CTA. Implementujeme: CTA nad foldem, jeden primární CTA na email, konkrétnější texty tlačítek. Testujeme v A/B testech.</div>
+  <div class="lever-goal">Cíl: udržet rostoucí trend, posouvat se směrem k 0,6-0,8 %.</div>
+</div>
+
+<div class="lever">
+  <div class="lever-header"><span class="lever-num">2</span><span class="lever-title">Zvýšit objem triggerů v Abandoned flows</span></div>
+  <div class="lever-body">Abandoned Checkout (RPR 24,15 Kč) a Abandoned Product (RPR 8,41 Kč) mají silný RPR, ale nízký počet doručení. Prioritou je zlepšit identifikaci návštěvníků a tracking, aby se triggery spouštěly častěji. Zdvojnásobení objemu = přibližně zdvojnásobení revenue.</div>
+  <div class="lever-goal">Cíl: +50 % doručení v Abandoned flows.</div>
+</div>
+
+<div class="lever">
+  <div class="lever-header"><span class="lever-num">3</span><span class="lever-title">Silnější CTA v edukačních kampaních</span></div>
+  <div class="lever-body">Edukační kampaně (Retinol, Suchá pleť) mají dobrý OR, ale nízký CR. Místo obecných článků přidáme do každé edukační kampaně produkt nebo akci — "Zjistěte, který retinol je pro vás" místo "Proč je retinol populární".</div>
+  <div class="lever-goal">Cíl: edukační kampaně s CR nad 0,4 % (momentálně 0,18-0,25 %).</div>
+</div>
+
+
+<!-- ── 8. A/B TEST NÁPADY ── -->
+<h2>8. A/B test nápady</h2>
+
+<div class="callout green">
+  <div class="callout-header">
+    <span class="callout-title">Co testovat v březnu</span>
+  </div>
+  <ul>
+    <li><strong>CTA umístění:</strong> CTA nad foldem vs. pod obsahem. Na základě auditu — kampaně s nízkým CR mají CTA až na konci emailu. Testujeme na 2-3 kampaních.</li>
+    <li><strong>Subject line styl:</strong> Konkrétní produkt v předmětu ("Hydra Serum: 3 důvody proč ho milujeme") vs. curiosity gap ("Jedna věc, která vám chybí v rutině"). Data ukazují, že produktové předměty mají vyšší OR.</li>
+    <li><strong>Edukační vs. produkt-first:</strong> V jednom emailu testujeme verzi s článkem + CTA vs. rovnou produktový přehled. Ověříme, jestli edukace opravdu pomáhá konverzi.</li>
+  </ul>
+</div>
+
+
+<!-- ── 9. CLOSING ── -->
+<h2>9. Závěr</h2>
+
+<div class="callout dark">
+  <div class="callout-header">
+    <span class="callout-title">Shrnutí</span>
+  </div>
+  <p><strong>E-mailing je na dobré cestě.</strong> Kampaně rostou, infrastruktura je kompletní, všech 13 flows běží spolehlivě. RPR se zdvojnásobilo, unsubscribe klesly, databáze zdravě roste.</p>
+  <br>
+  <p>Víme, kde jsou mezery — click rate a diverzifikace flow revenue — a aktivně na nich pracujeme. V březnu se soustředíme na tři konkrétní věci: silnější CTA, více triggerů v abandon flows a A/B testy. Výsledky ukážeme na příštím callu.</p>
+  <br>
+  <p><strong>Díky za spolupráci a těšíme se na další měsíc.</strong></p>
+</div>
+
+</div><!-- /.doc-inner -->
+
+<!-- ── FOOTER ── -->
+<div class="doc-footer">
+  <div class="footer-logo">
+    <svg width="577" height="115" viewBox="0 0 577 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M316.305 27.3256V16.0866H328.48V27.3256H316.305ZM316.305 90.5895V35.6659H328.48V90.5895H316.305Z" fill="white"/>
+      <path d="M363.67 92.1152C358.214 92.1152 353.448 90.8777 349.373 88.4027C345.297 85.9278 342.131 82.5205 339.875 78.1808C337.652 73.8073 336.541 68.7896 336.541 63.1277C336.541 57.3641 337.686 52.3125 339.976 47.9728C342.266 43.6332 345.449 40.2428 349.524 37.8018C353.599 35.3607 358.315 34.1402 363.67 34.1402C369.159 34.1402 373.942 35.3777 378.017 37.8526C382.092 40.3276 385.258 43.7518 387.515 48.1254C389.771 52.465 390.9 57.4658 390.9 63.1277C390.9 68.8235 389.755 73.8581 387.464 78.2317C385.208 82.5713 382.042 85.9786 377.967 88.4536C373.891 90.8946 369.126 92.1152 363.67 92.1152ZM363.67 80.6219C368.52 80.6219 372.123 78.9945 374.481 75.7398C376.838 72.485 378.017 68.281 378.017 63.1277C378.017 57.8048 376.822 53.5669 374.43 50.4139C372.039 47.227 368.452 45.6335 363.67 45.6335C360.403 45.6335 357.708 46.3794 355.586 47.8711C353.498 49.329 351.949 51.3801 350.939 54.0246C349.928 56.6352 349.423 59.6695 349.423 63.1277C349.423 68.4505 350.619 72.7054 353.01 75.8923C355.435 79.0454 358.988 80.6219 363.67 80.6219Z" fill="white"/>
+      <path d="M486.497 92.1152C480.704 92.1152 475.601 90.9285 471.189 88.5553C466.811 86.182 463.376 82.8426 460.883 78.5368C458.425 74.2311 457.195 69.1795 457.195 63.382V25.8458L469.522 20.4093V63.0768C469.522 65.823 469.977 68.281 470.886 70.4508C471.829 72.6207 473.092 74.4684 474.675 75.994C476.258 77.4858 478.077 78.6216 480.131 79.4013C482.186 80.1811 484.308 80.571 486.497 80.571C488.753 80.571 490.892 80.1811 492.913 79.4013C494.967 78.5877 496.786 77.435 498.369 75.9432C499.952 74.4175 501.198 72.5698 502.107 70.4C503.017 68.2302 503.471 65.7891 503.471 63.0768V5.43654L515.798 0V63.382C515.798 69.1795 514.552 74.2311 512.06 78.5368C509.601 82.8426 506.166 86.182 501.754 88.5553C497.375 90.9285 492.29 92.1152 486.497 92.1152Z" fill="#316CF0"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M538.706 88.301C542.31 90.8438 546.773 92.1152 552.094 92.1152C557.112 92.1152 561.491 90.8438 565.229 88.301C568.967 85.7582 571.864 82.3001 573.918 77.9266C575.973 73.553 577 68.62 577 63.1277C577 57.5675 575.956 52.6176 573.868 48.278C571.78 43.9044 568.833 40.4632 565.027 37.9543C561.255 35.4116 556.792 34.1402 551.639 34.1402C546.453 34.1402 542.091 35.4116 538.555 37.9543C537.847 38.4615 537.173 39.0067 536.534 39.59V35.6659H525.773V115H538.049V87.8199C538.265 87.9838 538.484 88.1441 538.706 88.301ZM536.534 63.1277V39.59C536.383 39.7281 536.233 39.8684 536.086 40.0108C533.774 42.2421 531.937 44.9978 530.573 48.278C528.754 52.6515 527.845 57.6014 527.845 63.1277C527.845 68.5861 528.754 73.5191 530.573 77.9266C532.279 82.0303 534.771 85.3281 538.049 87.8199V74.2141H536.534V63.1277ZM558.055 78.7402C556.001 80.3337 553.391 81.1304 550.225 81.1304C546.958 81.1304 544.314 80.3846 542.293 78.8928C540.306 77.3671 538.841 75.2482 537.898 72.5359C536.989 69.8236 536.534 66.6875 536.534 63.1277C536.534 59.5339 536.989 56.3979 537.898 53.7195C538.841 51.0072 540.289 48.9052 542.243 47.4134C544.196 45.8878 546.722 45.1249 549.82 45.1249C553.087 45.1249 555.782 45.9386 557.904 47.566C560.025 49.1595 561.592 51.3293 562.602 54.0754C563.612 56.7877 564.118 59.8051 564.118 63.1277C564.118 66.4841 563.612 69.5354 562.602 72.2816C561.625 74.9939 560.11 77.1468 558.055 78.7402Z" fill="#316CF0"/>
+      <path d="M527.845 63.1277C527.845 68.5861 528.754 73.5191 530.573 77.9266C532.279 82.0303 534.771 85.3281 538.049 87.8199V74.2141H536.534V63.1277V39.59C536.383 39.7281 536.233 39.8684 536.086 40.0108C533.774 42.2421 531.937 44.9978 530.573 48.278C528.754 52.6515 527.845 57.6014 527.845 63.1277Z" fill="#316CF0"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M435.727 64.1448V90.5895H448.054V59.9238C448.054 58.6016 447.936 56.8894 447.7 54.7874C447.498 52.6515 447.026 50.3969 446.286 48.0237C445.545 45.6504 444.4 43.4128 442.85 41.3108C441.301 39.2088 439.213 37.4797 436.586 36.1236C433.959 34.7674 430.625 34.0894 426.583 34.0894C421.464 34.0894 417.153 35.2251 413.65 37.4967C411.775 38.6942 410.142 40.1152 408.75 41.7595V35.6659H397.888V90.5895H410.215V62.3649C410.215 59.0084 410.585 56.2622 411.326 54.1263C412.067 51.9565 413.044 50.2613 414.256 49.0408C415.502 47.7864 416.883 46.9049 418.399 46.3963C419.914 45.8878 421.447 45.6335 422.996 45.6335C425.892 45.6335 428.183 46.2607 429.867 47.5151C431.584 48.7696 432.864 50.38 433.706 52.3464C434.582 54.2789 435.138 56.2961 435.373 58.3981C435.609 60.5002 435.727 62.4157 435.727 64.1448ZM410.215 62.3649V52.7024H408.75V41.7595C408.679 41.8434 408.608 41.9278 408.538 42.0128C407.42 43.3756 406.464 44.8876 405.668 46.5489C403.883 50.3461 402.99 54.584 402.99 59.2627L410.215 62.3649Z" fill="white"/>
+      <path d="M402.99 59.2627L410.215 62.3649V52.7024H408.75V41.7595C408.679 41.8434 408.608 41.9278 408.538 42.0128C407.42 43.3756 406.464 44.8876 405.668 46.5489C403.883 50.3461 402.99 54.584 402.99 59.2627Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M296.995 91.454C300.464 91.5557 304 91.2676 307.604 90.5895V80.3167C304.202 80.8253 301.171 80.9609 298.51 80.7236C295.85 80.4863 293.913 79.3505 292.701 77.3163C292.061 76.2653 291.707 74.9091 291.64 73.2479C291.606 71.5866 291.589 69.6541 291.589 67.4504V45.2775H307.604V35.6659H291.589V20.4093H279.465V35.6659H269.563V45.2775H279.465V68.1623C279.465 71.2815 279.498 74.0785 279.566 76.5535C279.633 79.0284 280.29 81.4525 281.536 83.8258C282.951 86.4363 285.022 88.3519 287.75 89.5724C290.478 90.759 293.56 91.3862 296.995 91.454ZM279.465 45.2775H291.589V35.6659H279.465V45.2775Z" fill="white"/>
+      <path d="M279.465 45.2775H291.589V35.6659H279.465V45.2775Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M254.157 64.1448V90.5895H266.484V59.9238C266.484 58.6016 266.366 56.8894 266.13 54.7874C265.928 52.6515 265.456 50.3969 264.715 48.0237C263.974 45.6504 262.829 43.4128 261.28 41.3108C259.731 39.2088 257.643 37.4797 255.016 36.1236C252.389 34.7674 249.054 34.0894 245.013 34.0894C239.893 34.0894 235.582 35.2251 232.08 37.4967C230.205 38.6942 228.572 40.1152 227.179 41.7595V35.6659H216.318V90.5895H228.644V62.3649C228.644 59.0084 229.015 56.2622 229.756 54.1263C230.497 51.9565 231.474 50.2613 232.686 49.0408C233.932 47.7864 235.313 46.9049 236.829 46.3963C238.344 45.8878 239.877 45.6335 241.426 45.6335C244.322 45.6335 246.613 46.2607 248.297 47.5151C250.014 48.7696 251.294 50.38 252.136 52.3464C253.012 54.2789 253.567 56.2961 253.803 58.3981C254.039 60.5002 254.157 62.4157 254.157 64.1448ZM228.644 62.3649V52.7024H227.179V41.7595C227.108 41.8434 227.038 41.9278 226.968 42.0128C225.85 43.3756 224.893 44.8876 224.098 46.5489C222.313 50.3461 221.42 54.584 221.42 59.2627L228.644 62.3649Z" fill="white"/>
+      <path d="M221.42 59.2627L228.644 62.3649V52.7024H227.179V41.7595C227.108 41.8434 227.038 41.9278 226.968 42.0128C225.85 43.3756 224.893 44.8876 224.098 46.5489C222.313 50.3461 221.42 54.584 221.42 59.2627Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M171.415 88.5044C175.591 90.9116 180.441 92.1152 185.964 92.1152C191.218 92.1152 196.018 90.7421 200.362 87.9959C204.741 85.2497 207.974 81.4017 210.062 76.4518L198.038 72.7902C196.86 75.3329 195.176 77.2824 192.986 78.6385C190.831 79.9608 188.254 80.6219 185.257 80.6219C180.609 80.6219 177.073 79.0962 174.648 76.0449C172.743 73.6486 171.587 70.4786 171.178 66.535H198.594V62.0597C198.585 60.3815 198.495 58.8307 198.326 57.4072C198.321 57.3645 198.316 57.3218 198.31 57.2793H204.707V66.535H210.668C211.14 59.9577 210.416 54.245 208.496 49.3968C206.576 44.5486 203.629 40.8022 199.655 38.1578C195.714 35.4794 190.915 34.1402 185.257 34.1402C179.902 34.1402 175.187 35.3607 171.111 37.8018C167.036 40.2428 163.853 43.684 161.563 48.1254C159.273 52.5328 158.128 57.737 158.128 63.7379C158.128 69.2981 159.29 74.2141 161.614 78.486C163.971 82.7578 167.238 86.0973 171.415 88.5044ZM198.31 57.2793C197.871 53.7037 196.921 50.9406 195.462 48.9899C193.407 46.2438 190.174 44.8707 185.762 44.8707C180.777 44.8707 177.073 46.4302 174.648 49.5493C173.09 51.5313 172.033 54.108 171.475 57.2793H198.31Z" fill="white"/>
+      <path d="M198.594 66.535H204.707V57.2793H198.31L198.326 57.4072C198.495 58.8307 198.585 60.3815 198.594 62.0597V66.535Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M145.622 91.454C149.091 91.5557 152.627 91.2676 156.231 90.5895V80.3167C152.829 80.8253 149.798 80.9609 147.138 80.7236C144.477 80.4863 142.54 79.3505 141.328 77.3163C140.688 76.2653 140.334 74.9091 140.267 73.2479C140.233 71.5866 140.216 69.6541 140.216 67.4504V45.2775H156.231V35.6659H140.216V20.4093H128.092V35.6659H118.19V45.2775H128.092V68.1623C128.092 71.2815 128.125 74.0785 128.193 76.5535C128.26 79.0284 128.917 81.4525 130.163 83.8258C131.578 86.4363 133.649 88.3519 136.377 89.5724C139.105 90.759 142.187 91.3862 145.622 91.454ZM128.092 45.2775H140.216V35.6659H128.092V45.2775Z" fill="white"/>
+      <path d="M128.092 45.2775H140.216V35.6659H128.092V45.2775Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M77.768 88.5044C81.9442 90.9116 86.7941 92.1152 92.3176 92.1152C97.5716 92.1152 102.371 90.7421 106.716 87.9959C111.094 85.2497 114.327 81.4017 116.415 76.4518L104.392 72.7902C103.213 75.3329 101.529 77.2824 99.3398 78.6385C97.1843 79.9608 94.6078 80.6219 91.6103 80.6219C86.9625 80.6219 83.4261 79.0962 81.0012 76.0449C79.0968 73.6486 77.9402 70.4786 77.5314 66.535H104.947V62.0597C104.938 60.3815 104.849 58.8307 104.679 57.4072C104.674 57.3645 104.669 57.3218 104.664 57.2793H111.06V66.535H117.022C117.493 59.9577 116.769 54.245 114.849 49.3968C112.93 44.5486 109.983 40.8022 106.008 38.1578C102.068 35.4794 97.2685 34.1402 91.6103 34.1402C86.2552 34.1402 81.5401 35.3607 77.4648 37.8018C73.3896 40.2428 70.2069 43.684 67.9167 48.1254C65.6264 52.5328 64.4813 57.737 64.4813 63.7379C64.4813 69.2981 65.6433 74.2141 67.9672 78.486C70.3248 82.7578 73.5917 86.0973 77.768 88.5044ZM104.664 57.2793C104.224 53.7037 103.275 50.9406 101.815 48.9899C99.7608 46.2438 96.5275 44.8707 92.1155 44.8707C87.1309 44.8707 83.4261 46.4302 81.0012 49.5493C79.4434 51.5313 78.3859 54.108 77.8289 57.2793H104.664Z" fill="white"/>
+      <path d="M104.947 66.535H111.06V57.2793H104.664L104.679 57.4072C104.849 58.8307 104.938 60.3815 104.947 62.0597V66.535Z" fill="white"/>
+      <path d="M34.9116 17.358H-0.000131398L4.85254 28.8513H17.0277H34.4064C35.08 28.8513 35.8378 28.8852 36.6798 28.953C37.5218 28.9869 38.2964 29.1055 39.0037 29.309C41.0245 29.8175 42.6074 30.716 43.7525 32.0043C44.9313 33.2926 45.7565 34.7674 46.228 36.4287C46.7332 38.0561 46.9858 39.6495 46.9858 41.2091C46.9858 42.7686 46.7332 44.3621 46.228 45.9895C45.7565 47.6168 44.9313 49.0747 43.7525 50.363C42.6074 51.6514 41.0245 52.5498 39.0037 53.0584C38.2964 53.2618 37.5218 53.3974 36.6798 53.4652C35.8378 53.533 35.08 53.5669 34.4064 53.5669H17.0277H4.85254V90.5895H17.0277V65.0093H34.3168L32.2846 60.7883L44.6619 58.0422L46.9879 62.845C50.2435 61.4439 52.8361 59.3682 54.7658 56.6182C57.7633 52.3125 59.262 47.1761 59.262 41.2091C59.262 37.1746 58.5884 33.513 57.2413 30.2244C55.9277 26.9018 53.8901 24.1556 51.1284 21.9858C48.4003 19.816 44.9313 18.409 40.7214 17.7648C39.7783 17.5953 38.7511 17.4936 37.6397 17.4597C36.5283 17.3919 35.6189 17.358 34.9116 17.358Z" fill="white"/>
+      <path d="M40.974 64.5516L35.7705 65.0093H34.3168L46.6322 90.5895H60.424L46.9879 62.845C45.1863 63.6204 43.1816 64.1893 40.974 64.5516Z" fill="white"/>
+      <path d="M35.7705 65.0093L40.974 64.5516C43.1816 64.1893 45.1863 63.6204 46.9879 62.845L44.6619 58.0422L32.2846 60.7883L34.3168 65.0093H35.7705Z" fill="white"/>
+    </svg>
+  </div>
+  <div class="footer-meta">Březen 2026 &nbsp;|&nbsp; [YOUR_DOMAIN]</div>
+</div>
+
+
+<script>
+const COLORS = ['#316CF0', '#2A9D8F', '#f6ad55', '#e93d3d', '#1A1C1F'];
+const LABELS = ['Welcome', 'Abandon flows', 'Post-purchase', 'Replenishment', 'Ostatní'];
+
+function donut(id, data, colors, labels) {
+  const ctx = document.getElementById(id).getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: '#fff', hoverOffset: 6 }]
+    },
+    options: {
+      cutout: '58%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { font: { family: 'Manrope', size: 12 }, padding: 10, boxWidth: 14 }
+        },
+        tooltip: { callbacks: { label: c => ` ${c.label}: ${c.raw} %` } }
+      }
+    }
+  });
+}
+
+donut('chartFlowSplit',  [64, 10, 7, 2, 17], COLORS, LABELS);
+donut('chartFlowTarget', [40, 20, 15, 10, 15], COLORS, LABELS);
+</script>
+</body>
+</html>

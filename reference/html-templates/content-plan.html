@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Plan — Demo E-shop — Brezen 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --accent: #316CF0;
+    --text: #1A1C1F;
+    --bg-light: #F3F5F7;
+    --highlight: #FCF2B5;
+    --green: #2A9D8F;
+    --orange: #f6ad55;
+    --red: #e93d3d;
+    --white: #ffffff;
+    --border: #1A1C1F;
+    --border-subtle: #cbd5e0;
+    --muted: #8893A8;
+    --red-bg: #FFF0F0;
+    --green-bg: #F0FAF8;
+    --orange-bg: #FFF8EE;
+    --blue-bg: #EBF0FF;
+    --purple: #7C3AED;
+    --purple-bg: #F3EEFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Manrope', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--white);
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+  }
+
+  /* ── Header ── */
+  .doc-header { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 2px solid var(--border); }
+  .doc-header .brand { font-size: 16px; font-weight: 800; color: var(--accent); letter-spacing: 0.5px; margin-bottom: 12px; }
+  .doc-header h1 { font-size: 36px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; margin-bottom: 6px; }
+  .doc-header .subtitle { font-size: 18px; color: var(--muted); font-weight: 500; margin-bottom: 4px; }
+  .doc-header .meta { font-size: 13px; color: var(--muted); }
+
+  /* ── Typography ── */
+  h2 { font-size: 22px; font-weight: 800; color: var(--text); margin-top: 52px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 17px; font-weight: 700; color: var(--text); margin-top: 28px; margin-bottom: 12px; }
+  p { margin-bottom: 14px; font-size: 15px; line-height: 1.65; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; }
+
+  /* ── KPI Cards ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+  .kpi { background: var(--bg-light); border: 2px solid var(--border); border-radius: 15px; padding: 16px 18px; text-align: center; }
+  .kpi .kpi-label { font-size: 12px; color: var(--muted); margin-bottom: 5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .kpi .kpi-value { font-size: 28px; font-weight: 800; color: var(--accent); margin-bottom: 4px; line-height: 1.2; }
+  .kpi .kpi-desc { font-size: 13px; color: var(--text); font-weight: 500; }
+
+  /* ── Callout Boxes ── */
+  .callout { border-radius: 15px; padding: 18px 22px; margin: 16px 0; border: 2px solid; font-size: 14px; line-height: 1.6; }
+  .callout.green  { border-color: var(--green);  background: var(--green-bg); }
+  .callout.red    { border-color: var(--red);    background: var(--red-bg); }
+  .callout.orange { border-color: var(--orange); background: var(--orange-bg); }
+  .callout.yellow { border-color: #E6D98A;       background: var(--highlight); }
+  .callout.blue   { border-color: var(--accent); background: var(--blue-bg); }
+  .callout.dark   { border-color: var(--border); background: var(--bg-light); }
+  .callout .callout-title { font-weight: 700; font-size: 13px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .callout.green  .callout-title { color: var(--green); }
+  .callout.red    .callout-title { color: var(--red); }
+  .callout.orange .callout-title { color: #C07A20; }
+  .callout.yellow .callout-title { color: #8B7A1A; }
+  .callout.blue   .callout-title { color: var(--accent); }
+  .callout.dark   .callout-title { color: var(--text); }
+  .callout ul { padding-left: 18px; }
+  .callout li { margin-bottom: 6px; }
+  .callout p { font-size: 14px; line-height: 1.6; margin-bottom: 6px; }
+
+  /* ── Data Tables ── */
+  .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; border: 2px solid var(--border); border-radius: 15px; overflow: hidden; }
+  .data-table th { background: var(--text); color: var(--white); padding: 10px 14px; text-align: left; font-weight: 600; font-size: 13px; }
+  .data-table td { padding: 9px 14px; border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
+  .data-table tr:nth-child(even) td { background: var(--bg-light); }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* ── Campaign Type Badges ── */
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap; }
+  .badge.promo   { background: var(--blue-bg); color: var(--accent); border: 1px solid var(--accent); }
+  .badge.edu     { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+  .badge.story   { background: var(--orange-bg); color: #C07A20; border: 1px solid var(--orange); }
+  .badge.social  { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple); }
+  .badge.launch  { background: var(--red-bg); color: var(--red); border: 1px solid var(--red); }
+
+  /* ── Campaign Detail Cards ── */
+  .campaign-card { border: 2px solid var(--border); border-radius: 15px; padding: 22px 24px; margin: 16px 0; background: var(--bg-light); }
+  .campaign-card .card-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .campaign-card .card-num { font-size: 16px; font-weight: 800; color: var(--accent); }
+  .campaign-card .card-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  .campaign-card .card-date { font-size: 13px; color: var(--muted); font-weight: 500; margin-left: auto; }
+  .campaign-card .card-body { font-size: 14px; line-height: 1.7; }
+  .campaign-card .card-body dt { font-weight: 700; color: var(--text); margin-top: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .campaign-card .card-body dd { margin-left: 0; margin-bottom: 4px; }
+  .campaign-card .card-body ul { padding-left: 18px; margin-bottom: 4px; }
+  .campaign-card .card-body li { margin-bottom: 3px; }
+
+  /* ── Utility ── */
+  .note { font-size: 13px; color: var(--muted); font-style: italic; margin-top: 6px; }
+  .spacer { height: 32px; }
+
+  /* ── Print ── */
+  @media print {
+    body { padding: 20px; max-width: 100%; font-size: 13px; }
+    .callout, .campaign-card, .kpi-grid, .data-table { break-inside: avoid; }
+    h2 { break-after: avoid; }
+    .badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="doc-header">
+  <div class="brand">RETENTIONUP</div>
+  <h1>Content Plan</h1>
+  <div class="subtitle">Demo E-shop — Brezen 2026</div>
+  <div class="meta">Frekvence: 2x/tyden &nbsp;|&nbsp; Segment: Engaged 90D &nbsp;|&nbsp; Vygenerovano: 5. brezna 2026</div>
+</div>
+
+
+<!-- ── 1. MONTHLY OVERVIEW ── -->
+<h2>1. Klicove prilezitosti mesice</h2>
+
+<div class="callout yellow">
+  <div class="callout-title">Brezen 2026 — 3 velke prilezitosti</div>
+  <ul>
+    <li><strong>MDZ (8. brezna)</strong> — Darkovy sortiment, pece o sebe, cas pro zenu</li>
+    <li><strong>Launch novych produktu (10. brezna)</strong> — Novinka + vyhodne bundly</li>
+    <li><strong>Prichod jara (20. brezna)</strong> — Sezonni pece, jarni restart pokozky</li>
+  </ul>
+  <p>Audit ukazal, ze campaign RPR se zdvojnasobilo — stavime na tom, co funguje. Click rate (0,40 %) je hlavni prilezitost ke zlepseni — kazda kampan v tomto planu ma jasne CTA nad foldem.</p>
+</div>
+
+
+<!-- ── 2. CAMPAIGN MIX ── -->
+<h2>2. Mix kampani</h2>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="kpi-label">Promo / Product</div><div class="kpi-value">40 %</div><div class="kpi-desc">Launch, bundly, akce</div></div>
+  <div class="kpi"><div class="kpi-label">Edukacni</div><div class="kpi-value">30 %</div><div class="kpi-desc">Navody, tipy, ingredience</div></div>
+  <div class="kpi"><div class="kpi-label">Storytelling</div><div class="kpi-value">30 %</div><div class="kpi-desc">Pribeh znacky, sezona, hodnoty</div></div>
+</div>
+
+
+<!-- ── 3. CAMPAIGN CALENDAR ── -->
+<h2>3. Kampanovy kalendar</h2>
+
+<table class="data-table">
+  <thead><tr><th>Tyden</th><th>Datum</th><th>Typ</th><th>Tema / Angle</th><th>Subject Line Ideas</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>10</td>
+      <td>Ct 6.3.</td>
+      <td><span class="badge story">Storytelling</span></td>
+      <td><strong>MDZ: Cas pro sebe</strong> — Darkove tipy pro zenu. Darkove sady, peelingy.</td>
+      <td>„Zaslouzite si chvili jen pro sebe" / „Darek, ktery voni prirodou"</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Ut 10.3.</td>
+      <td><span class="badge launch">Launch</span></td>
+      <td><strong>NOVINKA: Nova rada produktu</strong> — Predstaveni nove rady. Proc je lepsi nez alternativy.</td>
+      <td>„Nova rada, ktera zmeni vas ritual" / „3 ingredience, 1 krasna vune"</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Ct 12.3.</td>
+      <td><span class="badge promo">Promo</span></td>
+      <td><strong>Vyhodne bundly</strong> — Kompletni ritual za zvyhodnenou cenu. 4 varianty.</td>
+      <td>„Cely ritual v jednom balicku" / „Ktery bundle je pro vas?"</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Ut 17.3.</td>
+      <td><span class="badge edu">Edukacni</span></td>
+      <td><strong>5 zpusobu pouziti</strong> — Edukacni obsah z blogu. Prekvapive zpusoby vyuziti produktu.</td>
+      <td>„Znate vsech 5 zpusobu?" / „Jedna lahvicka, pet ritualu"</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Ct 19.3.</td>
+      <td><span class="badge social">Social proof</span></td>
+      <td><strong>Recenze zakazniku</strong> — Skutecne recenze o tom, jak produkty pomohly.</td>
+      <td>„Tyhle recenze mluvi za vse" / „Prirodni reseni, ktere funguje"</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Ut 24.3.</td>
+      <td><span class="badge story">Storytelling</span></td>
+      <td><strong>Jaro a pribeh znacky</strong> — Prichod jara, vyroba, rodinna firma.</td>
+      <td>„Jaro zacina u nas" / „Pribeh, ktery voni"</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Ct 26.3.</td>
+      <td><span class="badge promo">Promo</span></td>
+      <td><strong>Follow-up / reminder</strong> — Pripomenuti nove rady po 2 tydnech + recenze.</td>
+      <td>„Uz jste vyzkouseli novou radu?" / „Nas novy bestseller?"</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- ── 4. CAMPAIGN DETAILS ── -->
+<h2>4. Detail kampani</h2>
+
+<div class="campaign-card">
+  <div class="card-header">
+    <span class="card-num">#1</span>
+    <span class="card-title">MDZ: Cas pro sebe</span>
+    <span class="card-date">6. brezna</span>
+  </div>
+  <div class="card-body">
+    <dl>
+      <dt>Angle</dt>
+      <dd>Emocni — pece o sebe jako darek, ne jen povinny svatek. „Kytice zvadne, ale ritual pece zustane."</dd>
+      <dt>Key message</dt>
+      <dd>Darujte (sobe nebo blizkym) moment klidu a vune.</dd>
+      <dt>CTA</dt>
+      <dd>Prohlednout darkove tipy →</dd>
+      <dt>Produkty</dt>
+      <dd>Darkove sady, peeling, tělove maslo</dd>
+      <dt>Poznamky pro briefing</dt>
+      <dd>Vykani, emocni ton. CTA nad foldem. Zminit rucni vyrobu.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="campaign-card">
+  <div class="card-header">
+    <span class="card-num">#2</span>
+    <span class="card-title">NOVINKA: Nova rada produktu</span>
+    <span class="card-date">10. brezna</span>
+  </div>
+  <div class="card-body">
+    <dl>
+      <dt>Angle</dt>
+      <dd>Product launch — proc je nova rada lepsi nez alternativy. Inovativni slozeni.</dd>
+      <dt>Key message</dt>
+      <dd>Produkt, ktery cisti a zaroven pecuje. Zadny tucny pocit.</dd>
+      <dt>CTA</dt>
+      <dd>Vyzkouset novou radu →</dd>
+      <dt>Produkty</dt>
+      <dd>4 varianty nove rady (ruzne vune/typy)</dd>
+      <dt>Poznamky pro briefing</dt>
+      <dd>Launch energy — novinka, nadseni, inovace. Smyslovy popis (vune, pocit). Zminit certifikace.</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="campaign-card">
+  <div class="card-header">
+    <span class="card-num">#3</span>
+    <span class="card-title">Vyhodne bundly</span>
+    <span class="card-date">12. brezna</span>
+  </div>
+  <div class="card-body">
+    <dl>
+      <dt>Angle</dt>
+      <dd>Hodnota — cely ritual pece za zvyhodnenou cenu. 3 kroky k dokonale pokozce.</dd>
+      <dt>Key message</dt>
+      <dd>3 kroky, 1 balicek — a usetrite.</dd>
+      <dt>CTA</dt>
+      <dd>Vybrat svuj bundle →</dd>
+      <dt>Produkty</dt>
+      <dd>4 tematicke bundly (ruzne varianty)</dd>
+      <dt>Poznamky pro briefing</dt>
+      <dd>Quiz-like approach: „Jaka jste?" Ukazat usporu vs. nakup jednotlive.</dd>
+    </dl>
+  </div>
+</div>
+
+<p class="note">Detaily zbylych kampani (#4-#7) jsou ve stejnem formatu — angle, key message, CTA, produkty, poznamky pro briefing.</p>
+
+
+<!-- ── 5. RATIONALE ── -->
+<h2>5. Proc tento mix</h2>
+
+<div class="callout dark">
+  <div class="callout-title">Strategicke zduvodneni</div>
+  <ul>
+    <li><strong>Launch dominuje prvni polovinu</strong> — klient spousti novy produkt, to musi byt hlavni fokus. Launch → bundle follow-up dava prostor pro 2 touchpointy bez opakovani.</li>
+    <li><strong>Edukacni obsah v druhe polovine</strong> — zvysuje awareness o produktech, ktere zakaznici neznaji. Audit ukazal, ze campaign RPR se zdvojnasobilo — edukacni obsah pravdepodobne prispiva k lepsi konverzi.</li>
+    <li><strong>Storytelling ke konci mesice</strong> — brand story buduje vztah a pripravuje na dalsi mesic.</li>
+    <li><strong>Kazda kampan ma jasne CTA nad foldem</strong> — primarna odpoved na click rate problém (0,40 %).</li>
+  </ul>
+</div>
+
+
+<!-- ── 6. A/B TESTS ── -->
+<h2>6. A/B testy</h2>
+
+<div class="callout green">
+  <div class="callout-title">Navrhy na testovani</div>
+  <ul>
+    <li><strong>Subject line format:</strong> Curiosity-gap („Znate vsech 5 zpusobu?") vs. benefit-first („Prirodni reseni pro citlivou pokozku") — testovat na kampanich #4 vs. #5.</li>
+    <li><strong>CTA button copy:</strong> „Koupit" vs. „Vyzkouset" vs. „Objevit" — testovat na launch emailu.</li>
+    <li><strong>Send time:</strong> Utery rano (9:00) vs. utery odpoledne (14:00) na jedne kampani.</li>
+  </ul>
+</div>
+
+
+<div class="spacer"></div>
+<p class="note" style="text-align:center">[YOUR_AGENCY] &nbsp;|&nbsp; Brezen 2026</p>
+
+</body>
+</html>
