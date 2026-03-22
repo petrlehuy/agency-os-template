@@ -209,7 +209,7 @@ Everything in `reference/` is the source of truth for your methodology. Skills l
 | Folder | Purpose |
 |--------|---------|
 | `projects/` | Project data, profiles, deliverable tracking, outputs |
-| `context/` | Business context, service packages, brand assets |
+| `context/` | Business context, service packages, brand assets (ICP, positioning, pain points, voice, proof inventory, competitive, market research) |
 | `reference/` | Your methodology, SOPs, templates |
 | `tools/` | Utility scripts and MCP servers |
 | `plans/` | Cross-project brainstorming and design docs |

@@ -68,7 +68,19 @@ agency-os/
 │   ├── course-knowledge/     # Methodology by topic
 │   ├── sops/                 # Step-by-step procedures
 │   └── html-templates/       # Report formatting
-├── context/                  # Business context, packages, brand assets
+├── context/                  # Business context + brand assets
+│   ├── agency.md             # Agency overview, tools, processes
+│   ├── packages.md           # Service packages and pricing
+│   ├── icp.md                # Ideal client profiles
+│   ├── positioning.md        # Market positioning and messaging
+│   ├── pain-points.md        # Prospect pain points and objections
+│   ├── prospect-language.md  # Raw prospect language for copy
+│   ├── proof-inventory.md    # Client results and testimonials
+│   ├── services.md           # Service deliverables and process
+│   ├── competitive.md        # Competitive landscape
+│   ├── market-research.md    # Industry data and benchmarks
+│   ├── colors.md             # Brand color palette
+│   └── voice.md              # Brand voice and tone
 ├── tools/                    # Utility scripts + MCP servers
 ├── workflows/                # Deployable automated workflows
 └── plans/                    # Strategic brainstorm docs
