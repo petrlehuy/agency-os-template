@@ -47,6 +47,6 @@ By Profile: industry/role (B2B) / use case / company size
 
 ## Testing and Optimization
 
-What to Test: subject lines (highest impact), send times, email length, CTA placement and copy, personalization level, sequence timing
+What to Test: headlines/subject lines (highest impact), send times, content length, CTA placement and copy, personalization level, sequence timing
 How to Test: A/B test one variable at a time, sufficient sample size, statistical significance, document learnings
-Metrics to Track: open rate (benchmark 20-40%), click rate (benchmark 2-5%), unsubscribe rate (keep under 0.5%), conversion rate, revenue per email
+Metrics to Track: engagement rate, click-through rate, conversion rate, unsubscribe/opt-out rate, revenue per touchpoint

@@ -75,21 +75,21 @@ const PIPELINE = [
       },
       {
         name: 'Audit', cmd: '/audit', desc: 'Full email setup evaluation',
-        detail: 'Evaluates Klaviyo configuration, list health, flow coverage, and campaign performance. Works in two modes: onboarding audit (first-time evaluation) or recurring health check with period-over-period trends compared to the previous audit.',
+        detail: 'Evaluates current performance, identifies opportunities, and provides actionable recommendations. Works in two modes: onboarding audit (first-time evaluation) or recurring health check with period-over-period trends.',
         whenToUse: 'Onboarding: after /onboard, before /strategy — gives you the baseline picture before building anything. Monthly cycle: run at the start of each month for all DFY clients, 3–4 days before the strategic call.',
         practicalOutputs: ['Branded HTML audit report ready to share with AM for review', 'Clear diagnosis: what\'s configured correctly, what\'s missing, highest-priority gaps', 'Baseline metrics to compare against in future monthly audits', 'Strategic input for /strategy — which flows to prioritize and why'],
         outputs: 'projects/[client]/outputs/audit.html (branded HTML report)',
         pipelineNote: 'Step 2 of Onboarding · also Step 1 of Monthly Cycle',
       },
       {
-        name: 'Strategy', cmd: '/strategy', desc: 'Flow architecture + client-facing doc',
-        detail: 'Generates two outputs for the client strategy presentation: FigJam flow architecture diagrams (one per phase) and a branded HTML document with embedded screenshots and written explanation per flow. Presented to the client for approval before building anything.',
-        whenToUse: 'Audit is complete and you\'re ready to show the client the full automation plan. Run after /audit. This is what you present on the strategy call — client must approve it before any flows get built in Klaviyo.',
-        practicalOutputs: ['FigJam flow architecture diagrams (one per phase) ready to present', 'Branded HTML strategy document in Czech for the client presentation', 'Client-approved automation roadmap — once signed off, production can start', '/brief can now be run for each flow in the approved strategy'],
+        name: 'Strategy', cmd: '/strategy', desc: 'Service strategy + client-facing doc',
+        detail: 'Generates two outputs for the client strategy presentation: a visual architecture diagram (one per phase) and a branded HTML document with written explanation per service area. Presented to the client for approval before building anything.',
+        whenToUse: 'Audit is complete and you\'re ready to show the client the full service plan. Run after /audit. This is what you present on the strategy call — client must approve it before production starts.',
+        practicalOutputs: ['Visual architecture diagrams (one per phase) ready to present', 'Branded HTML strategy document for the client presentation', 'Client-approved service roadmap — once signed off, production can start', '/brief can now be run for each item in the approved strategy'],
         outputs: 'FigJam diagrams · projects/[client]/outputs/strategy.html',
         pipelineNote: 'Step 3 of Onboarding — client approves before production starts',
       },
-      { isHandoff: true, label: 'Client approves → build flows in Klaviyo' },
+      { isHandoff: true, label: 'Client approves → begin production' },
     ],
   },
   {
@@ -110,7 +110,7 @@ const PIPELINE = [
         name: 'Copy Editing', cmd: '/copy-editing', desc: 'Polish copy before QA',
         detail: 'Applies the Seven Sweeps Framework to systematically improve cooperator copy before it goes into QA. Focuses on clarity, tone alignment, CTA strength, and brand voice — without rewriting the entire email. Run this before /review to catch obvious issues early.',
         whenToUse: 'Cooperator has delivered draft copy and you want to tighten it before formal QA. Useful when copy is structurally sound but needs polish — saves QA cycles and reduces back-and-forth with the cooperator.',
-        practicalOutputs: ['Polished draft with stronger clarity, CTA, and brand voice alignment', 'Fewer /review iterations — obvious issues caught before formal QA', 'Faster production cycle — less back-and-forth before Klaviyo implementation'],
+        practicalOutputs: ['Polished draft with stronger clarity, CTA, and brand voice alignment', 'Fewer /review iterations — obvious issues caught before formal QA', 'Faster production cycle — less back-and-forth before implementation'],
         outputs: 'projects/[client]/outputs/copy-edit-[name].md',
         pipelineNote: 'Step 2 of Production — run after cooperator delivers copy',
       },
@@ -122,7 +122,7 @@ const PIPELINE = [
         outputs: 'Structured review report (inline in Claude Code session)',
         pipelineNote: 'Step 3 of Production — last Claude step before design handoff',
       },
-      { isHandoff: true, label: 'Design → Client approval → Klaviyo' },
+      { isHandoff: true, label: 'Design → Client approval → Implementation' },
     ],
   },
   {
@@ -1127,7 +1127,7 @@ function reconstructBody(originalBody, sections) {
   const firstH2 = originalBody.search(/^## .+$/m);
   const preamble = firstH2 > 0 ? originalBody.substring(0, firstH2) : '';
 
-  // Get the postamble (everything after the last section — Klaviyo notes etc.)
+  // Get the postamble (everything after the last section — platform notes etc.)
   const regex = /^## .+$/gm;
   const matches = [];
   let m;
@@ -1140,7 +1140,7 @@ function reconstructBody(originalBody, sections) {
   const nextH2InLast = lastSectionBody.substring(1).search(/^## .+$/m);
   const lastSectionEnd = nextH2InLast === -1 ? originalBody.length : lastSectionStart + 1 + nextH2InLast;
 
-  // Check if there's trailing content after all ## sections (like Klaviyo Setup Notes)
+  // Check if there's trailing content after all ## sections (like platform setup notes)
   // Those use ## too, so they're captured as sections. Just rejoin all sections.
   return preamble + sections.join('\n\n---\n\n') + '\n';
 }

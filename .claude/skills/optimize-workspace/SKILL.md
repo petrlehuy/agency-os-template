@@ -22,7 +22,7 @@ Run these 8 checks. Use subagents or parallel bash commands where possible to mi
 
 **Check 1 — Oversized Files (HIGH)**
 
-Find all `.md` and `.html` files (excluding `node_modules/`, `.git/`, `reports/`). Flag:
+Find all `.md` and `.html` files (excluding `node_modules/`, `.git/`). Flag:
 - Markdown files over 300 lines
 - HTML files over 500 lines
 - Any single file over 1,000 lines
@@ -31,7 +31,7 @@ For each, report: path, line count, what it contains, whether it could be split 
 
 **Check 2 — Duplicate Content (HIGH)**
 
-Compare files in `projects/*/outputs/` against `reports/*/`. Files that are identical (or near-identical) represent duplication waste — `reports/` is the deployed copy. Quantify total duplicated lines.
+Scan `projects/*/outputs/` for duplicate or near-identical files across projects. Quantify total duplicated lines.
 
 **Check 3 — Tracked Binaries (HIGH)**
 
@@ -121,7 +121,6 @@ After presenting the report, ask: **"Which fixes would you like me to apply? Pic
 
 **Never auto-fix:**
 - Delete any file outright (only archive/move)
-- Modify anything in `reports/` (deployed content)
 - Change skill logic or behavior (only structural refactoring like extracting templates)
 - Run `git rm` on tracked binaries (provide commands for user to run manually)
 

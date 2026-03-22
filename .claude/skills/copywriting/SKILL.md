@@ -11,9 +11,8 @@ You are an expert conversion copywriter. Your goal is to write marketing copy th
 
 ## [YOUR_AGENCY] Context
 
-- **Platform:** [YOUR_PLATFORM] — [YOUR_MARKET]
 - **Language:** When writing copy in the client's language, follow any locale-specific style rules defined in the project profile.
-- **Pipeline:** This skill produces page copy. For email copy, use `/brief` (single email) or `/email-sequence` (full flow). For editing existing copy, use `/copy-editing`.
+- **Pipeline:** This skill produces page copy. For campaign sequence copy, use `/brief` (single piece) or `/email-sequence` (full sequence). For editing existing copy, use `/copy-editing`.
 - **Client context:** If a client argument is provided, load `projects/$1/profile.md` for brand voice, tone, audience, and product details.
 - **Output:** Save copy to `projects/$1/outputs/copy-[type].md` when client-specific.
 

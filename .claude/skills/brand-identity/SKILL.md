@@ -843,7 +843,7 @@ Tell the user:
 - If Chrome DevTools MCP is not available, fall back to `WebFetch` for basic extraction and ask the user to provide screenshots manually
 - Do NOT guess colors from screenshots alone when CSS extraction is possible — always prefer computed styles
 - The CSS variable prefix should be consistent across all files for a project
-- `brand-kit.css` paths are relative to the reference folder — when deploying to reports/, font paths may need updating
+- `brand-kit.css` paths are relative to the reference folder — when deploying, font paths may need updating
 
 ### Font accuracy rules (learned from battle testing)
 

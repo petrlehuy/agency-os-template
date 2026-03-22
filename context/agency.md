@@ -3,8 +3,8 @@
 ## Overview
 - **Agency**: [YOUR_AGENCY_NAME]
 - **Founded**: [YEAR]
-- **Focus**: [e.g., Email marketing, Social media management, Paid ads]
-- **Platform**: [e.g., Klaviyo, Mailchimp, Meta Ads]
+- **Focus**: [e.g., Social media management, Paid ads, CRO, Hiring]
+- **Platform**: [e.g., Meta Ads, HubSpot, Webflow, Hootsuite]
 - **Market**: [e.g., Czech e-commerce, US SaaS, European DTC brands]
 - **Team size**: [NUMBER]
 

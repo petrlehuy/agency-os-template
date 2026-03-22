@@ -21,13 +21,11 @@ If omitted, ask: "What are you looking for?"
 | Location | What's Here | Best For |
 |----------|-------------|----------|
 | `reference/sops/` | SOPs | Step-by-step platform procedures |
-| `reference/course-knowledge/` | 9 methodology files | Campaigns, flows, copy, deliverability |
-| `reference/email-strategy.md` | Strategic lens + market insights | Data interpretation, decision trees |
-| `reference/benchmarks.md` | Industry benchmarks + client data | Open rates, RPR, popup CVR |
-| `reference/flow-architectures-*.md` | Phase 1 + Phase 2 flow blueprints | Flow design and sequencing |
+| `reference/course-knowledge/` | Methodology files | Best practices by topic |
+| `reference/benchmarks.md` | Industry benchmarks + client data | Performance context |
 | `projects/*/profile.md` | Client brand, audience, products, performance | Client-specific data |
-| `projects/*/flows.md` | Flow build status + per-flow performance | What's live per client |
-| `context/` | Business context, service packages | [YOUR_AGENCY] internal info |
+| `projects/*/deliverables.md` | Deliverable status + tracking | What's live per client |
+| `context/` | Business context, service packages, brand assets | [YOUR_AGENCY] internal info |
 
 ## Steps
 
@@ -55,7 +53,7 @@ ls reference/sops/ | grep -i "[keyword]"
 
 **Client-specific search (when client name is in query):**
 ```bash
-grep -i -n "[keyword]" projects/[client]/profile.md projects/[client]/flows.md
+grep -i -n "[keyword]" projects/[client]/profile.md projects/[client]/deliverables.md
 ```
 
 **Broad project search (when no specific client):**
@@ -94,27 +92,24 @@ If multiple results, rank by relevance (most specific match first).
 ### 5. If No Results
 
 Broaden the search:
-- Try synonyms or adjacent terms (e.g., "welcome flow" → "welcome series", "welcome email")
+- Try synonyms or adjacent terms (e.g., "onboarding sequence" → "welcome series", "welcome campaign")
 - Check if the topic is covered under a different section
 - Tell the user: "Searched [locations], didn't find [query]. Tried [synonym] — nothing either. This topic may not be in the reference library yet."
 
 ## Example Queries
 
 ```
-/search welcome flow SOP
-→ Scans reference/sops/ for "welcome", returns Welcome Series SOP
+/search onboarding SOP
+→ Scans reference/sops/ for "onboarding", returns relevant SOP
 
-/search benchmark open rate
+/search benchmark conversion rate
 → Returns relevant section from reference/benchmarks.md
 
-/search abandoned cart flow [example-client]
-→ Scopes to projects/[example-client]/flows.md, returns cart abandonment data
+/search [example-client] deliverables
+→ Scopes to projects/[example-client]/deliverables.md, returns status
 
-/search post-purchase sequence methodology
-→ Returns from reference/course-knowledge/ + reference/flow-architectures-*.md
-
-/search deliverability warm-up steps
-→ Returns from reference/sops/ + reference/course-knowledge/deliverability.md
+/search copywriting methodology
+→ Returns from reference/course-knowledge/
 ```
 
 ## Notes

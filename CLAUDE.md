@@ -1,6 +1,6 @@
 # [YOUR_AGENCY] OS
 
-[YOUR_DESCRIPTION — e.g., "Email marketing agency workspace. Klaviyo-focused, serving Czech e-commerce brands." or "Social media agency workspace. Full-service content + paid ads for brands doing 10M+ CZK/year."]
+[YOUR_DESCRIPTION — e.g., "Social media agency workspace. Full-service content + paid ads for DTC brands." or "CRO agency. Conversion optimization for e-commerce brands doing $1M+/year."]
 
 Founded by [FOUNDER_NAME].
 
@@ -129,9 +129,9 @@ See `.mcp.example.json` for configuration template. Copy to `.mcp.json` and fill
 | Skill | Purpose |
 |-------|---------|
 | `/onboard` | Client files + internal team brief from form data |
-| `/audit` | Email marketing audit — onboarding or recurring health check. Outputs branded HTML. |
-| `/strategy` | Flow architecture diagrams + HTML strategy document |
-| `/brief` | Copywriter brief for a flow email or campaign |
+| `/audit` | Marketing performance audit — onboarding or recurring. Outputs branded HTML. |
+| `/strategy` | Service strategy document (HTML) |
+| `/brief` | Creative brief for a deliverable |
 | `/content-plan` | Monthly content ideas + campaign calendar. Outputs branded HTML. |
 | `/call-prep` | Strategic call agenda + talking points |
 | `/skill-builder` | Build or audit Claude Code skills |
@@ -139,17 +139,17 @@ See `.mcp.example.json` for configuration template. Copy to `.mcp.json` and fill
 | `/creative-matrix` | Paid ads creative pipeline: build matrix, evaluate, iterate |
 | `/export-pdf` | Convert HTML report to PDF for client sharing |
 | `/optimize-workspace` | Workspace health scan — finds bloat, drift, orphaned files |
-| `/copy-editing` | Seven Sweeps Framework — improve existing copy before QA review |
+| `/copy-editing` | Improve existing copy before QA review (Seven Sweeps) |
 | `/copywriting` | Write new marketing copy for landing pages, case studies, homepages |
 | `/content-strategy` | Macro content strategy: pillars, topic clusters, editorial calendar |
-| `/email-sequence` | Design complete multi-email flow with full copy |
+| `/email-sequence` | Design multi-step campaign sequence with full copy |
 | `/review` | QA review of output — structured PASS/FAIL scorecard with severity levels |
 | `/loom-transcript` | Fetch and display full transcript from a Loom video URL |
 | `/ui-ux-pro-max` | UI/UX design intelligence — build, review, or improve interfaces |
 | `/excalidraw-visuals` | Generate hand-drawn diagram PNGs from a description |
 | `/pause-work` | Save session state before pausing |
 | `/search` | Search the workspace knowledge base without loading whole files |
-| `/deploy` | Deploy HTML reports to Vercel |
+| `/deploy` | Deploy HTML outputs to hosting |
 | `/setup` | First-run wizard — configures the entire workspace interactively |
 
 **First run:** `/setup` — configures all placeholders across the workspace.
@@ -183,21 +183,10 @@ Self-contained WAT units in `workflows/[name]/`. Each is independently deployabl
 
 Each project is a subfolder in `projects/`:
 - `projects/[name]/profile.md` — Brand, voice, audience, products, package, strategy, performance
-- `projects/[name]/flows.md` — Flow variables, build status per phase, customizations, per-flow performance
-- `projects/[name]/outputs/` — Project-specific deliverables (audits, strategies, briefs, reports)
+- `projects/[name]/deliverables.md` — Deliverable tracking, build status, customizations, per-deliverable performance
+- `projects/[name]/outputs/` — Project-specific outputs (audits, strategies, briefs, reports)
 
-Templates: `projects/_templates/profile.md`, `projects/_templates/flows.md`
-
----
-
-## Deployment (Vercel)
-
-All client-facing HTML outputs are deployed through the **`reports/`** folder.
-
-- **Deploy root:** `reports/` — this folder is what Vercel serves.
-- **File structure:** `reports/[project-name]/[output-name].html` → `[YOUR_DOMAIN]/[project-name]/[output-name]`
-- **Deploy command:** From the `reports/` folder, run `vercel deploy --prod --yes`.
-- **Config:** `reports/vercel.json` handles clean URLs and noindex headers.
+Templates: `projects/_templates/profile.md`, `projects/_templates/deliverables.md`
 
 ---
 
@@ -219,10 +208,9 @@ Everything in `reference/` is the source of truth for your methodology. Skills l
 
 | Folder | Purpose |
 |--------|---------|
-| `projects/` | Project data, profiles, flow tracking, outputs |
-| `context/` | Business context and service packages |
+| `projects/` | Project data, profiles, deliverable tracking, outputs |
+| `context/` | Business context, service packages, brand assets |
 | `reference/` | Your methodology, SOPs, templates |
-| `reports/` | Client-facing HTML outputs (deployable to Vercel) |
 | `tools/` | Utility scripts and MCP servers |
 | `plans/` | Cross-project brainstorming and design docs |
 | `workflows/` | Deployable automated workflow units |

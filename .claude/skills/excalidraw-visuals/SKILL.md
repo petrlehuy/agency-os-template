@@ -542,9 +542,8 @@ done
 cd .claude/skills/excalidraw-visuals/references
 uv run python render_excalidraw.py <path-to-file.excalidraw> --scale 1
 
-# 4. Copy to reports and embed (if strategy HTML exists)
-cp projects/<client>/outputs/flow-diagrams/*.png reports/<client>/flow-diagrams/
-python3 tools/embed-flow-buttons.py  # embeds PNGs into strategy HTML
+# 4. Embed into strategy HTML (if exists)
+# Copy diagrams into outputs and embed into strategy HTML if applicable
 ```
 
 ### Key Technical Details

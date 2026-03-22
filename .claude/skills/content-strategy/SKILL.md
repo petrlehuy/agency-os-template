@@ -330,6 +330,6 @@ Visual or structured representation of how content interconnects.
 |------|--------------|
 | Monthly campaign calendar | `/content-plan` |
 | Writing individual content pieces | `/copywriting` |
-| Email sequence design | `/email-sequence` |
+| Campaign sequence design | `/email-sequence` |
 | Brand voice reference | `/brand-identity` |
-| Email marketing audit | `/audit` |
+| Marketing performance audit | `/audit` |

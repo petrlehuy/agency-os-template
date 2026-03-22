@@ -14,7 +14,7 @@ Generates a complete strategic call prep package: client-facing agenda + interna
 ## Files to Load
 
 1. `projects/$1/profile.md` (client profile — always loaded)
-2. `projects/$1/flows.md` (flow status — if exists)
+2. `projects/$1/deliverables.md` (deliverables status — if exists)
 3. `projects/$1/outputs/audit.html` (latest audit findings — if exists. Also check `audit.md` for older audits.)
 4. `projects/$1/outputs/content-plan-*.*` (latest content plan — load the most recently modified file matching this pattern, check both .html and .md)
 
@@ -76,10 +76,10 @@ A brief, shareable agenda (Czech). 4-5 items max.
 - Where to get client input (their promotions/launches/events)
 - Pull key points from content plan if loaded
 
-**Flow Updates**
-- What's been built/optimized since last call (from flows.md status)
+**Deliverables Update**
+- What's been built/optimized since last call (from deliverables tracking)
 - What's planned next
-- Any results from recent flow changes
+- Any results from recent changes
 - If audit exists: which audit recommendations have been addressed
 
 **Strategic Recommendations**

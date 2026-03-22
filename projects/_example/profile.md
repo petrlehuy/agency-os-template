@@ -15,7 +15,7 @@
 
 ## Brand Voice
 - **Tone**: Professional but approachable
-- **Language**: [Czech / English / etc.]
+- **Language**: [English / etc.]
 - **Key phrases**: [brand-specific language]
 - **Avoid**: [what NOT to say]
 
@@ -28,9 +28,7 @@
 - [Product category 2]
 
 ## Performance
-- **Open rate**: [X]%
-- **Click rate**: [X]%
-- **Revenue per recipient**: [X] CZK
+<!-- Add your key metrics here -->
 
 ## Notes
 - [Any special instructions, preferences, or history]

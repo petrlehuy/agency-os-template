@@ -7,7 +7,7 @@ A ready-to-use workspace for running a marketing agency with Claude Code. Built 
 This repo IS your AI agent. It contains:
 - **Skills** — interactive workflows triggered by `/slash-command` or natural language
 - **Agents** — AI personalities with specific roles (researcher, reviewer, QA, documenter)
-- **Reference** — your methodology, SOPs, templates, benchmarks
+- **Reference** — your methodology, SOPs, templates
 - **Projects** — client data, profiles, deliverables
 - **Tools** — utility scripts and MCP integrations
 
@@ -41,7 +41,7 @@ The wizard fills in 88+ placeholders across 30+ files. It takes about 10 minutes
 ```bash
 cp -r projects/_templates projects/my-first-client
 ```
-Fill in `profile.md` and `flows.md` with your client's data.
+Fill in `profile.md` and `deliverables.md` with your client's data.
 
 ### 6. Add Your Methodology (Over Time)
 Put your knowledge base in `reference/`:
@@ -57,20 +57,18 @@ Claude gets smarter as you add more reference material. The `/setup` wizard crea
 agency-os/
 ├── CLAUDE.md                 # The brain — agency instructions for Claude
 ├── .claude/
-│   ├── skills/               # 30+ interactive workflows
+│   ├── skills/               # 20+ interactive workflows
 │   ├── agents/               # AI personality definitions
 │   └── commands/             # (reserved)
 ├── projects/
-│   ├── _templates/           # Profile + flows templates
+│   ├── _templates/           # Profile + deliverables templates
 │   ├── _example/             # Sample project to learn the structure
 │   └── [your-clients]/       # One folder per client
 ├── reference/                # Your methodology + knowledge base
 │   ├── course-knowledge/     # Methodology by topic
 │   ├── sops/                 # Step-by-step procedures
 │   └── html-templates/       # Report formatting
-├── context/                  # Business context (agency info, packages)
-├── brand-assets/             # Your agency's brand materials
-├── reports/                  # Client-facing HTML (deployable to Vercel)
+├── context/                  # Business context, packages, brand assets
 ├── tools/                    # Utility scripts + MCP servers
 ├── workflows/                # Deployable automated workflows
 └── plans/                    # Strategic brainstorm docs
@@ -81,17 +79,17 @@ agency-os/
 | Skill | Purpose |
 |-------|---------|
 | `/onboard` | Client onboarding from form data |
-| `/audit` | Email marketing audit (HTML output) |
-| `/strategy` | Flow architecture + strategy document |
-| `/brief` | Copywriter brief for a flow or campaign |
+| `/audit` | Marketing performance audit (HTML output) |
+| `/strategy` | Service strategy document |
+| `/brief` | Creative brief for a deliverable |
 | `/content-plan` | Monthly content ideas + campaign calendar |
 | `/review` | QA review with PASS/FAIL scorecard |
-| `/email-sequence` | Multi-email flow with full copy |
+| `/email-sequence` | Multi-step campaign sequence with full copy |
 | `/creative-matrix` | Paid ads creative pipeline |
 | `/brand-identity` | Extract brand identity from website |
-| `/deploy` | Deploy HTML reports to Vercel |
+| `/deploy` | Deploy HTML outputs to hosting |
 | `/export-pdf` | Convert HTML to PDF |
-| ...and 20+ more | See CLAUDE.md for full list |
+| ...and 15+ more | See CLAUDE.md for full list |
 
 ## Collaboration (For Teams)
 

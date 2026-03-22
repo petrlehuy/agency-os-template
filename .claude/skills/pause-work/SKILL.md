@@ -23,7 +23,7 @@ git diff --stat HEAD          # What's modified
 Also check:
 - Active project folders: `ls -lt projects/ | head -10`
 - Pending plans: `grep -r "- \[ \]" plans/ 2>/dev/null` (open action items)
-- Recent outputs: any `.html` newer than the last commit in `projects/*/outputs/` or `reports/`
+- Recent outputs: any `.html` newer than the last commit in `projects/*/outputs/`
 
 ### 1.5. Skill Lesson Check
 
@@ -65,7 +65,7 @@ Create `plans/session-handoff-[YYYY-MM-DD].md`:
 ## Done This Session
 
 [3-6 bullets from recent git commits + file changes — be specific]
-- [e.g. "Completed [client] audit HTML — reports/[client]/audit.html"]
+- [e.g. "Completed [client] audit HTML — projects/[client]/outputs/audit.html"]
 - [e.g. "Updated projects/[client]/profile.md with March performance data"]
 
 ## In Progress
@@ -78,7 +78,7 @@ Create `plans/session-handoff-[YYYY-MM-DD].md`:
 ## Blockers / Waiting
 
 [Anything blocking progress]
-- [e.g. "Waiting for client to send March Klaviyo export"]
+- [e.g. "Waiting for client to send March platform export"]
 
 [If none: "None."]
 

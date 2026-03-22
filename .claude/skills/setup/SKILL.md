@@ -39,7 +39,7 @@ If ALL phases are done: "Setup is complete! Your workspace is fully configured. 
 
 1. **What's your agency name?**
 2. **What's the founder/owner's first name?**
-3. **Describe your agency in one sentence** (what you do + for whom, e.g., "Email marketing agency. Klaviyo-focused, serving Czech e-commerce brands.")
+3. **Describe your agency in one sentence** (what you do + for whom, e.g., "Social media agency. Full-service content + paid ads for DTC brands.")
 4. **What market do you serve?** (e.g., "Czech e-commerce", "US SaaS", "European DTC brands")
 5. **Year founded?**
 6. **Team size?**
@@ -48,7 +48,7 @@ If ALL phases are done: "Setup is complete! Your workspace is fully configured. 
 
 | Find | Replace with |
 |------|-------------|
-| `[YOUR_AGENCY]` | Agency name (e.g., "RetentionUp") |
+| `[YOUR_AGENCY]` | Agency name |
 | `[YOUR_AGENCY_NAME]` | Agency name |
 | `[YOUR_DESCRIPTION — e.g., ...]` | The full one-sentence description (remove the "e.g." hint) |
 | `[FOUNDER_NAME]` | Founder name |
@@ -72,9 +72,9 @@ Then replace in each file found.
 
 **Ask:**
 
-1. **What's your primary marketing/automation platform?** (e.g., Klaviyo, Mailchimp, ActiveCampaign, HubSpot, Ecomail)
-2. **What PM tool do you use?** (e.g., Freelo, Notion, Asana, ClickUp, Linear)
-3. **What analytics tool?** (e.g., Hiro Analytics, Google Analytics, Mixpanel)
+1. **What's your primary service delivery platform?** (e.g., Mailchimp, HubSpot, Meta Ads Manager, Hootsuite, Webflow)
+2. **What PM tool do you use?** (e.g., Notion, Asana, ClickUp, Linear, Monday)
+3. **What analytics tool?** (e.g., Google Analytics, Mixpanel, Looker Studio)
 4. **What CRM?** (e.g., HubSpot, Pipedrive, Close, Salesforce, or "none")
 
 **Apply:**
@@ -156,8 +156,8 @@ If the user doesn't use Google Drive: note that Drive sync is not configured.
 | `[YOUR_PRICING]` | Price point |
 
 Also create:
-- `brand-assets/voice.md` — Write brand voice guidelines based on their answers
-- `brand-assets/icp.md` — Write ICP definition based on their answers
+- `context/voice.md` — Write brand voice guidelines based on their answers
+- `context/icp.md` — Write ICP definition based on their answers
 
 If the user provided a website URL, suggest: "Want me to run `/brand-identity` on your website for a deeper brand extraction?"
 
@@ -202,24 +202,22 @@ Your workspace is configured! Here's what's left to fill in manually:
 
 METHODOLOGY (what makes your agency unique):
   reference/course-knowledge/  — Your frameworks and best practices by topic
-                                  Create files like: campaigns.md, flows.md,
-                                  copywriting.md, deliverability.md
+                                  Create files like: campaigns.md, deliverables.md,
+                                  copywriting.md, optimization.md
                                   These power the /brief, /review, and
                                   /email-sequence skills.
 
   reference/sops/              — Step-by-step procedures for your platform
                                   Create files for each task: e.g.,
-                                  create-welcome-flow.md, setup-popup.md
+                                  campaign-setup.md, client-onboarding.md
 
   reference/benchmarks.md      — Your industry benchmarks and client
-                                  performance data (open rates, click rates,
-                                  revenue per recipient, etc.)
+                                  performance data
 
 BRAND ASSETS:
-  reference/brand-assets/      — Logo SVGs, brand colors, typography
-
-  brand-assets/                — Market positioning files (these power
-                                  /creative-matrix and /copywriting skills)
+  context/                     — Brand voice, ICP, positioning files
+                                  (these power /creative-matrix and
+                                  /copywriting skills)
 
 You can add these over time. Claude gets smarter as you add more reference material.
 ```
@@ -241,9 +239,9 @@ You can add these over time. Claude gets smarter as you add more reference mater
 - [ ] Methodology files in `reference/course-knowledge/`
 - [ ] SOPs in `reference/sops/`
 - [ ] Benchmarks in `reference/benchmarks.md`
-- [ ] Logo SVGs in `reference/brand-assets/`
-- [ ] Google Drive folder IDs in organize-drive skill (if using Drive)
-- [ ] Report domain + Vercel project in deploy skill (if deploying reports)
+- [ ] Logo SVGs in `reference/`
+- [ ] Brand assets in `context/` (voice, ICP, positioning)
+- [ ] Deployment configuration in deploy skill (if deploying reports)
 ```
 
 Adjust the checklist based on which phases were actually completed vs. skipped.

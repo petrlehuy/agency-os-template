@@ -9,16 +9,12 @@ disable-model-invocation: true
 
 Manages the full creative pipeline for paid ad creatives: building a strategic matrix of ad concepts, evaluating performance data to find winners and losers, and briefing iteration batches that leverage winning elements.
 
-**Context:** This skill is for paid ads projects only (Meta Ads, Google Ads, TikTok, LinkedIn). It applies to projects like [example-project] or [YOUR_AGENCY]'s own paid acquisition — never to standard e-commerce email/Klaviyo clients. A "creative" here means a visual asset for digital ads (static banner or video), not an email or web banner.
+**Context:** This skill is for paid ads projects only (Meta Ads, Google Ads, TikTok, LinkedIn). It applies to projects with paid acquisition — a "creative" here means a visual asset for digital ads (static banner or video).
 
-**Two-matrix architecture (optional — for agency's own funnel):**
-When building for your agency's own acquisition funnel, you can use the mother/daughter/bridge system:
-- **Product Offer Matrix (mother)** — Maps product wins × audience awareness levels. Strategic truth table, not ads.
-- **Bridge** — Maps product wins → creative angles → hooks per audience level.
-- **Creative Matrix (daughter)** — Actual ad hooks derived from the product matrix.
-- Reference files: `projects/[your-project]/reference/product-offer-matrix.md`, `matrix-bridge.md`, `win-grouped-proof.md`
+**Multi-matrix architecture (optional):**
+For more complex funnels, you can layer multiple matrices that feed into each other. For simpler projects, a single creative matrix works fine.
 
-For other projects (e.g., [example-project]), the standard single-matrix approach works fine.
+[Define your matrix architecture here if you use a multi-matrix system — e.g., offer matrix feeding into creative matrix.]
 
 **Three modes:**
 - **build** — Create a new creative matrix from scratch (pain points × audience levels × visual approaches)
@@ -55,25 +51,23 @@ Validate prerequisites:
 
 Pull ICPs, pain points, and proof from the project profile. Then confirm with the AM.
 
-**For agency's own funnel (if using two-matrix architecture):** Load the two-matrix reference files first:
-- `projects/[your-project]/reference/product-offer-matrix.md` (mother — product wins × audience levels)
-- `projects/[your-project]/reference/matrix-bridge.md` (wins → angles → hooks)
-- `projects/[your-project]/reference/win-grouped-proof.md` (proof organized by product win)
-- `brand-assets/pain-points.md` (prospect language source material)
+**If using multi-matrix architecture:** Load your matrix reference files first.
 
-The product matrix and bridge are the foundation. The creative matrix (daughter) is derived from them. Every hook must carry a specific proof point from `win-grouped-proof.md` — no generic authority.
+[Add your reference file paths here]
 
 **X-axis — audience levels (matrix columns):**
 
-Determine audience levels from the profile. For your agency's own funnel, define your ICP segments (e.g., [YOUR_ICP_SEGMENT_1] and [YOUR_ICP_SEGMENT_2]). Ask:
+Determine audience levels from the profile. Ask:
 
 > "I found these audience segments: [list]. These will be the matrix columns. Correct?"
 
-If the profile contains psychographic archetypes (e.g., "Burned Buyer", "Capacity Crunch"), use those as a tagging layer inside each cell, not as columns.
+If the profile contains psychographic archetypes, use those as a tagging layer inside each cell, not as columns.
+
+[Define how you segment your audience within the matrix — as columns, tags, or layers]
 
 **Pain points — include sub-pain points:**
 
-Pull both the main pain point categories AND detailed sub-bullets (the raw language prospects use). Sub-pain points are critical — they become hook and copy source material.
+Pull both the main pain point categories AND detailed sub-bullets (the raw language prospects use).
 
 > "I found these pain points with sub-bullets: [list with sub-bullets]. Add, remove, or confirm?"
 
@@ -90,7 +84,7 @@ Pull both the main pain point categories AND detailed sub-bullets (the raw langu
 > Which work for this client? Any to add, remove, or modify based on their assets and capabilities?"
 
 Also gather:
-- **Proof points** — What results, testimonials, case studies, or data can be referenced? If using the two-matrix architecture, use `win-grouped-proof.md` — proof is organized by product win, not by client. Every hook gets a specific proof element ("flex smart" principle — show, don't tell).
+- **Proof points** — What results, testimonials, case studies, or data can be referenced?
 - **Constraints** — Any assets, testimonials, or approaches that CANNOT be used in ads? (Check the profile for restrictions like "X testimonial cannot be used in ads")
 
 #### 2b. Generate the Matrix
@@ -321,7 +315,7 @@ The matrix file (`creative-matrix.md`) is overwritten on rebuild. Evaluations an
 
 ## Notes
 
-- **Paid ads only.** This skill is NOT for email marketing, Klaviyo flows, campaigns, or standard [YOUR_AGENCY] retention clients. It's for paid ad creative management on platforms like Meta, Google, TikTok, LinkedIn.
+- **Paid ads only.** This skill is for paid ad creative management on platforms like Meta, Google, TikTok, LinkedIn.
 - **Data-only judgement.** Creatives are evaluated ONLY by performance data (CPC, CTR, CPA, ROAS, CVR). Never judge subjectively — "ugly" ads that perform well are winners.
 - **Creative fatigue is inevitable.** Every top performer will decline. The pipeline exists to have fresh creatives ready before winners fatigue. Flag urgency when top performers show declining metrics.
 - **Minimum viable data.** Don't evaluate creatives with insufficient spend or impressions. Premature kills waste potential winners. Let the AM set thresholds.
@@ -332,6 +326,5 @@ The matrix file (`creative-matrix.md`) is overwritten on rebuild. Evaluations an
 - **The matrix is a living document.** After each evaluate/iterate cycle, tested cells gain data and untested cells become priorities.
 - **Hook format.** Hooks should be multi-sentence script drafts (3-5 sentences) that the founder or talent can riff on when filming — not one-liners or headlines. All strategy, analysis, and rationale can stay in English for quality.
 - **HTML grid is primary.** Always generate the HTML grid (`reference/creative-matrix-grid.html`) — it's the production artifact the AM works from. The markdown file is a reference backup, not the working document.
-- **Two-matrix architecture (optional — agency funnel only).** Product Offer Matrix (mother) → Bridge → Creative Matrix (daughter). Product wins define what you deliver. Creative angles define which pain the ad addresses. Every hook carries a specific proof from `win-grouped-proof.md`. Authority is structural (infused in every hook), not a standalone angle. Program tiers (DFY/DWY or equivalent) live on the landing page and sales call, not in ad creatives.
-- **No standalone authority hooks.** "If you flex, flex smart." Every hook carries one specific proof point tied to the win it references. No generic authority claims ("50+ brands", big revenue numbers) — those are LP material. Test: "is there a pain to which this hook is a solution?" If no → it's not an ad creative, it's LP content.
-- **Your program naming.** Use whatever naming aligns with your positioning and price point. Frame in terms that justify [YOUR_PRICING] — avoid commodity language (e.g., "course", "workshop") if your program commands a premium price.
+- **Multi-matrix architecture (optional).** [Define your multi-matrix system here if applicable]
+- **Every hook needs a proof point.** Pair each hook with a specific result, testimonial, or data point. Generic authority claims belong on landing pages, not in ad creatives.

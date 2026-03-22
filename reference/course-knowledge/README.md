@@ -4,7 +4,7 @@ Your methodology files go here. Organize by topic — one file per pillar of you
 
 Example structure for an email marketing agency:
 - `campaigns.md` — campaign strategy, types, timing
-- `flows.md` — automation flows, triggers, best practices
+- `automations.md` — automation workflows, triggers, best practices
 - `copywriting.md` — email copy principles, frameworks
 - `deliverability.md` — inbox placement, authentication, reputation
 - `list-growth.md` — popup strategy, lead magnets, acquisition
