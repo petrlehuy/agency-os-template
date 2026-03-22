@@ -25,6 +25,14 @@ This workspace IS the agent. It follows the WAT framework (Workflows, Agents, To
 ## Session Start
 
 When beginning a new session:
+
+**Step 0 — Setup check (ALWAYS run first):**
+Check if `[YOUR_AGENCY]` still appears literally in this file (line 1). If it does, the workspace has NOT been configured yet. Do NOT proceed with normal work. Instead:
+1. Tell the user: "This workspace hasn't been set up yet. The files are full of placeholders that need your agency's real info. Let's run `/setup` first — it takes about 10 minutes and configures everything."
+2. Wait for the user to confirm, then run `/setup`.
+3. Do NOT offer to do any other work until setup is complete. If they ask to skip, warn them that skills will reference placeholder names and produce broken output.
+
+**If setup is complete (no `[YOUR_AGENCY]` placeholder found), proceed normally:**
 1. Sync with remote: check `git status` for uncommitted changes (flag if any), then `git checkout main && git pull`
 2. List all folders in `projects/` to see active work
 3. Briefly confirm readiness (5-8 lines max):
