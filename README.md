@@ -27,12 +27,15 @@ cp .env.example .env           # Add your API keys
 cp .mcp.example.json .mcp.json # Add your MCP server tokens
 ```
 
-### 4. Customize CLAUDE.md
-Open `CLAUDE.md` and replace all `[PLACEHOLDER]` values with your agency info:
-- Agency name, founder name
-- Service description
-- Connected tools
-- Project list
+### 4. Run the Setup Wizard
+```bash
+cd agency-os
+claude
+```
+
+Then type `/setup`. Claude will walk you through 7 phases — asking about your agency, platform, brand, and business model — then automatically configure every file in the workspace.
+
+The wizard fills in 88+ placeholders across 30+ files. It takes about 10 minutes and you'll have a fully working workspace.
 
 ### 5. Add Your First Project
 ```bash
@@ -40,19 +43,13 @@ cp -r projects/_templates projects/my-first-client
 ```
 Fill in `profile.md` and `flows.md` with your client's data.
 
-### 6. Add Your Methodology
+### 6. Add Your Methodology (Over Time)
 Put your knowledge base in `reference/`:
-- `reference/course-knowledge/` — your methodology by topic
-- `reference/sops/` — step-by-step procedures
+- `reference/course-knowledge/` — your methodology by topic (powers `/brief`, `/review`, `/email-sequence`)
+- `reference/sops/` — step-by-step procedures for your platform
 - `reference/html-templates/` — report formatting (3 templates included)
 
-### 7. Open Claude Code
-```bash
-cd agency-os
-claude
-```
-
-Claude will read your `CLAUDE.md`, see your projects, and ask what to work on.
+Claude gets smarter as you add more reference material. The `/setup` wizard creates a `SETUP-CHECKLIST.md` tracking what's left to fill in.
 
 ## Folder Structure
 

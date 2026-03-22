@@ -4,6 +4,8 @@
 
 Founded by [FOUNDER_NAME].
 
+> **First run?** If you see `[YOUR_AGENCY]` above (still a placeholder), this workspace hasn't been configured yet. Run `/setup` to launch the setup wizard — it'll ask about your agency and automatically configure everything.
+
 ---
 
 ## How This Works
@@ -140,6 +142,9 @@ See `.mcp.example.json` for configuration template. Copy to `.mcp.json` and fill
 | `/pause-work` | Save session state before pausing |
 | `/search` | Search the workspace knowledge base without loading whole files |
 | `/deploy` | Deploy HTML reports to Vercel |
+| `/setup` | First-run wizard — configures the entire workspace interactively |
+
+**First run:** `/setup` — configures all placeholders across the workspace.
 
 **Onboarding pipeline:** `/onboard` → `/audit` → `/strategy` → client approves → `/brief` → cooperator writes → `/review`. Each skill suggests the next step.
 
